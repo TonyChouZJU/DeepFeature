@@ -1,0 +1,2 @@
+/mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles/CLSWorker.dir
+/mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles/DPWorker.dir
