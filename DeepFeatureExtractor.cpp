@@ -72,8 +72,6 @@ cv::Mat DeepFeatureExtractor::compute(const cv::Mat& img) {
     //const float* begin = output_blob->cpu_data();
     float* begin = output_blob->mutable_cpu_data();
     const float* end = begin + output_blob->channels();
-    //return std::vector<float>(begin, end);
-    //TODO pca
     cv::Mat featureMat(1, 2048, CV_32FC1, begin);
     return featureMat.clone();
 }

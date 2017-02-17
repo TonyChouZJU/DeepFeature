@@ -1,4 +1,1 @@
-/mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/CLSWorker.dir
 /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/DPWorker.dir
-/mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/PCAWorker.dir
-/mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/tiny_pca_Worker.dir

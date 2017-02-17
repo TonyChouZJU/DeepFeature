@@ -1,1 +1,6 @@
 build/
+CMakeFiles/
+.gitignore
+CMakeCache.txt
+.tmp.txt
+*swp
