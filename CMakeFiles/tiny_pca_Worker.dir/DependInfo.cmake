@@ -4,8 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/exhdd/tomorning_dataset/examples/DL_worker/Classifier.cpp" "/mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/CLSWorker.dir/Classifier.cpp.o"
-  "/mnt/exhdd/tomorning_dataset/examples/DL_worker/cls_main.cpp" "/mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/CLSWorker.dir/cls_main.cpp.o"
+  "/mnt/exhdd/tomorning_dataset/examples/DL_worker/tiny_pca.cpp" "/mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/tiny_pca_Worker.dir/tiny_pca.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

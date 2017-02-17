@@ -49,4 +49,6 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/CLSWorker.dir/DependInfo.cmake"
   "CMakeFiles/DPWorker.dir/DependInfo.cmake"
+  "CMakeFiles/PCAWorker.dir/DependInfo.cmake"
+  "CMakeFiles/tiny_pca_Worker.dir/DependInfo.cmake"
   )

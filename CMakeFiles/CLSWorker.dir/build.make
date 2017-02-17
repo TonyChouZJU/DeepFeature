@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 # Include any dependencies generated for this target.
 include CMakeFiles/CLSWorker.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/CLSWorker.dir/flags.make
 
 CMakeFiles/CLSWorker.dir/cls_main.cpp.o: CMakeFiles/CLSWorker.dir/flags.make
 CMakeFiles/CLSWorker.dir/cls_main.cpp.o: cls_main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/CLSWorker.dir/cls_main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/CLSWorker.dir/cls_main.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/cls_main.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/CLSWorker.dir/cls_main.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/DL_worker/cls_main.cpp
 
 CMakeFiles/CLSWorker.dir/cls_main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLSWorker.dir/cls_main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/cls_main.cpp > CMakeFiles/CLSWorker.dir/cls_main.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/DL_worker/cls_main.cpp > CMakeFiles/CLSWorker.dir/cls_main.cpp.i
 
 CMakeFiles/CLSWorker.dir/cls_main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLSWorker.dir/cls_main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/cls_main.cpp -o CMakeFiles/CLSWorker.dir/cls_main.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/DL_worker/cls_main.cpp -o CMakeFiles/CLSWorker.dir/cls_main.cpp.s
 
 CMakeFiles/CLSWorker.dir/cls_main.cpp.o.requires:
 .PHONY : CMakeFiles/CLSWorker.dir/cls_main.cpp.o.requires
@@ -74,17 +74,17 @@ CMakeFiles/CLSWorker.dir/cls_main.cpp.o.provides.build: CMakeFiles/CLSWorker.dir
 
 CMakeFiles/CLSWorker.dir/Classifier.cpp.o: CMakeFiles/CLSWorker.dir/flags.make
 CMakeFiles/CLSWorker.dir/Classifier.cpp.o: Classifier.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/CLSWorker.dir/Classifier.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/CLSWorker.dir/Classifier.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/Classifier.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/CLSWorker.dir/Classifier.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/DL_worker/Classifier.cpp
 
 CMakeFiles/CLSWorker.dir/Classifier.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLSWorker.dir/Classifier.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/Classifier.cpp > CMakeFiles/CLSWorker.dir/Classifier.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/DL_worker/Classifier.cpp > CMakeFiles/CLSWorker.dir/Classifier.cpp.i
 
 CMakeFiles/CLSWorker.dir/Classifier.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLSWorker.dir/Classifier.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/Classifier.cpp -o CMakeFiles/CLSWorker.dir/Classifier.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/DL_worker/Classifier.cpp -o CMakeFiles/CLSWorker.dir/Classifier.cpp.s
 
 CMakeFiles/CLSWorker.dir/Classifier.cpp.o.requires:
 .PHONY : CMakeFiles/CLSWorker.dir/Classifier.cpp.o.requires
@@ -159,6 +159,6 @@ CMakeFiles/CLSWorker.dir/clean:
 .PHONY : CMakeFiles/CLSWorker.dir/clean
 
 CMakeFiles/CLSWorker.dir/depend:
-	cd /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles/CLSWorker.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/exhdd/tomorning_dataset/examples/DL_worker && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/CLSWorker.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/CLSWorker.dir/depend
 

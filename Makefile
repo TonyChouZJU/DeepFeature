@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,6 +123,32 @@ DPWorker: cmake_check_build_system
 DPWorker/fast:
 	$(MAKE) -f CMakeFiles/DPWorker.dir/build.make CMakeFiles/DPWorker.dir/build
 .PHONY : DPWorker/fast
+
+#=============================================================================
+# Target rules for targets named PCAWorker
+
+# Build rule for target.
+PCAWorker: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 PCAWorker
+.PHONY : PCAWorker
+
+# fast build rule for target.
+PCAWorker/fast:
+	$(MAKE) -f CMakeFiles/PCAWorker.dir/build.make CMakeFiles/PCAWorker.dir/build
+.PHONY : PCAWorker/fast
+
+#=============================================================================
+# Target rules for targets named tiny_pca_Worker
+
+# Build rule for target.
+tiny_pca_Worker: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tiny_pca_Worker
+.PHONY : tiny_pca_Worker
+
+# fast build rule for target.
+tiny_pca_Worker/fast:
+	$(MAKE) -f CMakeFiles/tiny_pca_Worker.dir/build.make CMakeFiles/tiny_pca_Worker.dir/build
+.PHONY : tiny_pca_Worker/fast
 
 Classifier.o: Classifier.cpp.o
 .PHONY : Classifier.o
@@ -220,6 +246,54 @@ dp_main.cpp.s:
 	$(MAKE) -f CMakeFiles/DPWorker.dir/build.make CMakeFiles/DPWorker.dir/dp_main.cpp.s
 .PHONY : dp_main.cpp.s
 
+pca.o: pca.cpp.o
+.PHONY : pca.o
+
+# target to build an object file
+pca.cpp.o:
+	$(MAKE) -f CMakeFiles/PCAWorker.dir/build.make CMakeFiles/PCAWorker.dir/pca.cpp.o
+.PHONY : pca.cpp.o
+
+pca.i: pca.cpp.i
+.PHONY : pca.i
+
+# target to preprocess a source file
+pca.cpp.i:
+	$(MAKE) -f CMakeFiles/PCAWorker.dir/build.make CMakeFiles/PCAWorker.dir/pca.cpp.i
+.PHONY : pca.cpp.i
+
+pca.s: pca.cpp.s
+.PHONY : pca.s
+
+# target to generate assembly for a file
+pca.cpp.s:
+	$(MAKE) -f CMakeFiles/PCAWorker.dir/build.make CMakeFiles/PCAWorker.dir/pca.cpp.s
+.PHONY : pca.cpp.s
+
+tiny_pca.o: tiny_pca.cpp.o
+.PHONY : tiny_pca.o
+
+# target to build an object file
+tiny_pca.cpp.o:
+	$(MAKE) -f CMakeFiles/tiny_pca_Worker.dir/build.make CMakeFiles/tiny_pca_Worker.dir/tiny_pca.cpp.o
+.PHONY : tiny_pca.cpp.o
+
+tiny_pca.i: tiny_pca.cpp.i
+.PHONY : tiny_pca.i
+
+# target to preprocess a source file
+tiny_pca.cpp.i:
+	$(MAKE) -f CMakeFiles/tiny_pca_Worker.dir/build.make CMakeFiles/tiny_pca_Worker.dir/tiny_pca.cpp.i
+.PHONY : tiny_pca.cpp.i
+
+tiny_pca.s: tiny_pca.cpp.s
+.PHONY : tiny_pca.s
+
+# target to generate assembly for a file
+tiny_pca.cpp.s:
+	$(MAKE) -f CMakeFiles/tiny_pca_Worker.dir/build.make CMakeFiles/tiny_pca_Worker.dir/tiny_pca.cpp.s
+.PHONY : tiny_pca.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -228,8 +302,10 @@ help:
 	@echo "... depend"
 	@echo "... CLSWorker"
 	@echo "... DPWorker"
+	@echo "... PCAWorker"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... tiny_pca_Worker"
 	@echo "... Classifier.o"
 	@echo "... Classifier.i"
 	@echo "... Classifier.s"
@@ -242,6 +318,12 @@ help:
 	@echo "... dp_main.o"
 	@echo "... dp_main.i"
 	@echo "... dp_main.s"
+	@echo "... pca.o"
+	@echo "... pca.i"
+	@echo "... pca.s"
+	@echo "... tiny_pca.o"
+	@echo "... tiny_pca.i"
+	@echo "... tiny_pca.s"
 .PHONY : help
 
 

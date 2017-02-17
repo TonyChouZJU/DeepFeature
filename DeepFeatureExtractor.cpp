@@ -1,5 +1,35 @@
 #include "DeepFeatureExtractor.hpp"
 
+
+cv::Mat DeepFeatureExtractor::projectPCA(cv::InputArray vec) {
+    return this->pca.project(vec);
+}
+
+void DeepFeatureExtractor::projectPCA(cv::InputArray _data, cv::OutputArray _data_reduced) {
+    this->pca.project(_data, _data_reduced);
+}
+
+void DeepFeatureExtractor::compressPCA(cv::InputArray _pcaset, cv::OutputArray _compressed, int maxComponents) {
+    this->pca = cv::PCA(_pcaset, //pass the data
+            cv::Mat(), //there is no pre-computes mean vector
+            CV_PCA_DATA_AS_ROW, //the vectors are stored as matrix rows
+            maxComponents // specify how many principal components to retain
+            );
+    cv::Mat pcaset = _pcaset.getMat();
+    _compressed.create(pcaset.rows,  maxComponents, pcaset.type());
+
+    //std::cout <<"Before pca _compressed:"<<_compressed.getMat().row(0) <<std::endl;
+    this->projectPCA(_pcaset, _compressed);
+    
+    //std::cout << "特征值:"<<this->pca.eigenvalues << std::endl;//特征值
+     
+    //std::cout <<"特征向量:"<< this->pca.eigenvectors << std::endl;//特征向量
+    //std::cout <<"After pca _compressed:"<<_compressed.getMat().row(0) <<std::endl;
+    //std::cout <<"After pca _compressed rows:"<<_compressed.getMat().rows << "cols:"<<_compressed.getMat().cols<<std::endl;
+    //std::cout <<" reconstructed:" <<this->pca.backProject(_compressed.getMat().row(0)) << std::endl;
+
+}
+
 DeepFeatureExtractor::DeepFeatureExtractor(const string& model_file,
                        const string& trained_file,
                        const string& mean_file,
@@ -36,8 +66,8 @@ else
     SetMean(mean_file);
 }
 
-/* Return the top N predictions. */
-std::vector<float> DeepFeatureExtractor::compute(const cv::Mat& img) {
+//std::vector<float> DeepFeatureExtractor::compute(const cv::Mat& img) {
+cv::Mat DeepFeatureExtractor::compute(const cv::Mat& img) {
     std::vector<cv::Mat> input_channels;
     WrapInputLayer(input_channels);
 
@@ -48,10 +78,13 @@ std::vector<float> DeepFeatureExtractor::compute(const cv::Mat& img) {
     /* Copy the output layer to a std::vector */
     //Blob<float>* output_blob = net_->blob_by_name(blob_name_);
     const boost::shared_ptr<Blob<float>> output_blob = net_->blob_by_name(blob_name_);
-    const float* begin = output_blob->cpu_data();
+    //const float* begin = output_blob->cpu_data();
+    float* begin = output_blob->mutable_cpu_data();
     const float* end = begin + output_blob->channels();
+    //return std::vector<float>(begin, end);
     //TODO pca
-    return std::vector<float>(begin, end);
+    cv::Mat featureMat(1, 2048, CV_32FC1, begin);
+    return featureMat.clone();
 }
 
 std::vector<std::vector<float>> DeepFeatureExtractor::compute(const std::vector<cv::Mat> &imgs) {

@@ -47,10 +47,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 #=============================================================================
 # Target rules for target CMakeFiles/CLSWorker.dir
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_w
 CMakeFiles/CLSWorker.dir/all:
 	$(MAKE) -f CMakeFiles/CLSWorker.dir/build.make CMakeFiles/CLSWorker.dir/depend
 	$(MAKE) -f CMakeFiles/CLSWorker.dir/build.make CMakeFiles/CLSWorker.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles  1 2
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles  1 2
 	@echo "Built target CLSWorker"
 .PHONY : CMakeFiles/CLSWorker.dir/all
 
@@ -69,9 +69,9 @@ all: CMakeFiles/CLSWorker.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/CLSWorker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/CLSWorker.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 0
 .PHONY : CMakeFiles/CLSWorker.dir/rule
 
 # Convenience name for target.
@@ -94,7 +94,7 @@ clean: CMakeFiles/CLSWorker.dir/clean
 CMakeFiles/DPWorker.dir/all:
 	$(MAKE) -f CMakeFiles/DPWorker.dir/build.make CMakeFiles/DPWorker.dir/depend
 	$(MAKE) -f CMakeFiles/DPWorker.dir/build.make CMakeFiles/DPWorker.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles  3 4
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles  3 4
 	@echo "Built target DPWorker"
 .PHONY : CMakeFiles/DPWorker.dir/all
 
@@ -104,9 +104,9 @@ all: CMakeFiles/DPWorker.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/DPWorker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/DPWorker.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 0
 .PHONY : CMakeFiles/DPWorker.dir/rule
 
 # Convenience name for target.
@@ -120,6 +120,76 @@ CMakeFiles/DPWorker.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/DPWorker.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/PCAWorker.dir
+
+# All Build rule for target.
+CMakeFiles/PCAWorker.dir/all:
+	$(MAKE) -f CMakeFiles/PCAWorker.dir/build.make CMakeFiles/PCAWorker.dir/depend
+	$(MAKE) -f CMakeFiles/PCAWorker.dir/build.make CMakeFiles/PCAWorker.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles  5
+	@echo "Built target PCAWorker"
+.PHONY : CMakeFiles/PCAWorker.dir/all
+
+# Include target in all.
+all: CMakeFiles/PCAWorker.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/PCAWorker.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/PCAWorker.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 0
+.PHONY : CMakeFiles/PCAWorker.dir/rule
+
+# Convenience name for target.
+PCAWorker: CMakeFiles/PCAWorker.dir/rule
+.PHONY : PCAWorker
+
+# clean rule for target.
+CMakeFiles/PCAWorker.dir/clean:
+	$(MAKE) -f CMakeFiles/PCAWorker.dir/build.make CMakeFiles/PCAWorker.dir/clean
+.PHONY : CMakeFiles/PCAWorker.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/PCAWorker.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/tiny_pca_Worker.dir
+
+# All Build rule for target.
+CMakeFiles/tiny_pca_Worker.dir/all:
+	$(MAKE) -f CMakeFiles/tiny_pca_Worker.dir/build.make CMakeFiles/tiny_pca_Worker.dir/depend
+	$(MAKE) -f CMakeFiles/tiny_pca_Worker.dir/build.make CMakeFiles/tiny_pca_Worker.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles  6
+	@echo "Built target tiny_pca_Worker"
+.PHONY : CMakeFiles/tiny_pca_Worker.dir/all
+
+# Include target in all.
+all: CMakeFiles/tiny_pca_Worker.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/tiny_pca_Worker.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tiny_pca_Worker.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles 0
+.PHONY : CMakeFiles/tiny_pca_Worker.dir/rule
+
+# Convenience name for target.
+tiny_pca_Worker: CMakeFiles/tiny_pca_Worker.dir/rule
+.PHONY : tiny_pca_Worker
+
+# clean rule for target.
+CMakeFiles/tiny_pca_Worker.dir/clean:
+	$(MAKE) -f CMakeFiles/tiny_pca_Worker.dir/build.make CMakeFiles/tiny_pca_Worker.dir/clean
+.PHONY : CMakeFiles/tiny_pca_Worker.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/tiny_pca_Worker.dir/clean
 .PHONY : clean
 
 #=============================================================================

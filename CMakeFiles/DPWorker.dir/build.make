@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_SOURCE_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker
+CMAKE_BINARY_DIR = /mnt/exhdd/tomorning_dataset/examples/DL_worker
 
 # Include any dependencies generated for this target.
 include CMakeFiles/DPWorker.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/DPWorker.dir/flags.make
 
 CMakeFiles/DPWorker.dir/dp_main.cpp.o: CMakeFiles/DPWorker.dir/flags.make
 CMakeFiles/DPWorker.dir/dp_main.cpp.o: dp_main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/DPWorker.dir/dp_main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DPWorker.dir/dp_main.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/dp_main.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DPWorker.dir/dp_main.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/DL_worker/dp_main.cpp
 
 CMakeFiles/DPWorker.dir/dp_main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DPWorker.dir/dp_main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/dp_main.cpp > CMakeFiles/DPWorker.dir/dp_main.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/DL_worker/dp_main.cpp > CMakeFiles/DPWorker.dir/dp_main.cpp.i
 
 CMakeFiles/DPWorker.dir/dp_main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DPWorker.dir/dp_main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/dp_main.cpp -o CMakeFiles/DPWorker.dir/dp_main.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/DL_worker/dp_main.cpp -o CMakeFiles/DPWorker.dir/dp_main.cpp.s
 
 CMakeFiles/DPWorker.dir/dp_main.cpp.o.requires:
 .PHONY : CMakeFiles/DPWorker.dir/dp_main.cpp.o.requires
@@ -74,17 +74,17 @@ CMakeFiles/DPWorker.dir/dp_main.cpp.o.provides.build: CMakeFiles/DPWorker.dir/dp
 
 CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.o: CMakeFiles/DPWorker.dir/flags.make
 CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.o: DeepFeatureExtractor.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/DeepFeatureExtractor.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.o -c /mnt/exhdd/tomorning_dataset/examples/DL_worker/DeepFeatureExtractor.cpp
 
 CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/DeepFeatureExtractor.cpp > CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /mnt/exhdd/tomorning_dataset/examples/DL_worker/DeepFeatureExtractor.cpp > CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.i
 
 CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/DeepFeatureExtractor.cpp -o CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /mnt/exhdd/tomorning_dataset/examples/DL_worker/DeepFeatureExtractor.cpp -o CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.s
 
 CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.o.requires:
 .PHONY : CMakeFiles/DPWorker.dir/DeepFeatureExtractor.cpp.o.requires
@@ -159,6 +159,6 @@ CMakeFiles/DPWorker.dir/clean:
 .PHONY : CMakeFiles/DPWorker.dir/clean
 
 CMakeFiles/DPWorker.dir/depend:
-	cd /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker /mnt/exhdd/tomorning_dataset/examples/cwt_classify_batch/DL_worker/CMakeFiles/DPWorker.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/exhdd/tomorning_dataset/examples/DL_worker && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker /mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/DPWorker.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/DPWorker.dir/depend
 

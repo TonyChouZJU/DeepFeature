@@ -23,9 +23,16 @@ public:
                bool gpu_mode=true,
                const string blob_name="pool5");
 
-    std::vector<float> compute(const cv::Mat& img);
+    //std::vector<float> compute(const cv::Mat& img);
+    cv::Mat compute(const cv::Mat& img);
 
     std::vector<std::vector<float> > compute(const std::vector<cv::Mat>& imgs);
+
+    void compressPCA(cv::InputArray _pcaset, cv::OutputArray _compressed, int maxComponents);
+
+    cv::Mat projectPCA(cv::InputArray vec);
+
+    void projectPCA(cv::InputArray _data, cv::OutputArray _data_reduced);
 
 private:
     DeepFeatureExtractor(const DeepFeatureExtractor&) = delete;
@@ -44,11 +51,13 @@ private:
     void Preprocess(const std::vector<cv::Mat>& imgs,
                     std::vector<std::vector<cv::Mat>> &input_channels);
 
+
 private:
     shared_ptr<Net<float> > net_;
     cv::Size input_geometry_;
     int num_channels_;
     cv::Mat mean_;
     string blob_name_;
+    cv::PCA pca; 
 };
 #endif //CAFFEWORKER_CLASSIFICATION_HPP
