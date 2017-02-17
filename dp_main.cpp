@@ -3,17 +3,9 @@
 #include <iomanip>
 
 static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst) {
-    //cv::Mat dst(static_cast<int>(data.size()), data[0].rows*data[0].cols, CV_32F);
     dst.create(static_cast<int>(data.size()), data[0].rows*data[0].cols, CV_32FC1);
-    for(int i = 0; i < data.size(); i++) {
-        //Mat Mat::reshape(int cn, int rows=0) const
-        //cv::Mat image_row = data[i].clone().reshape(1,1);
-        //cv::Mat row_i = dst.row(i);
-        cv::Mat row_i = dst.row(i);
-        //image_row.convertTo(row_i, CV_32F);
-        data[i].reshape(1,1).convertTo(row_i, CV_32F);
-        std:: cout << "features i" << i << " "<<  data[i].reshape(1,1) << std:: endl;
-    }
+    for(int i = 0; i < data.size(); i++)
+        data[i].copyTo(dst.row(i));
 }
 
 int main(int argc, char** argv) {
@@ -38,46 +30,24 @@ int main(int argc, char** argv) {
     cv::Mat img = cv::imread(file, -1);
     CHECK(!img.empty()) << "Unable to decode image " << file;
 
-    //std::vector<float> d_features =  df_extractor.compute(img);
     cv::Mat d_features =  df_extractor.compute(img);
     std::cout << "Mat features:" << d_features.rows << " "<< d_features.cols << std::endl;
 
+    /*--------------------Train --------------------*/
     std::vector<cv::Mat> vec_imgs(65, img);  
     std::vector<cv::Mat> vec_imgs_features;
     for(int i = 0; i != vec_imgs.size(); i++)
         vec_imgs_features.push_back( df_extractor.compute(vec_imgs[i]) );
 
     cv::Mat stack_features;
-    
     formatFeaturesForPCA(vec_imgs_features, stack_features);
     
-    std::cout << stack_features.rows <<" " << stack_features.cols << std::endl;
+    cv::Mat train_pca_featurs;
+    df_extractor.compressPCA(stack_features, train_pca_featurs, 64);
+    std::cout << "train_pca_features size:" <<train_pca_featurs.rows << " " << train_pca_featurs.cols  <<std::endl;
 
-    cv::Mat out_pca_featurs;
-    df_extractor.compressPCA(stack_features, out_pca_featurs, 64);
-
-    std::vector<float> vec_features(d_features.rows * d_features.cols);
-    if (d_features.isContinuous())
-    {
-        std::cout <<"is continuous"<<std::endl;
-        vec_features.assign((float*)d_features.datastart, (float*)d_features.dataend);
-    }
-
-    
-    //std::cout << out_pca_featurs <<std::endl;
-    /*
-    int fcols= d_features.cols, frows = d_features.rows;
-    if(d_features.isContinuous())
-    {
-        fcols*= frows;
-        frows = 1;
-    }
-
-    for(int i = 0; i < frows; i++){
-        const float* fi = d_features.ptr<float>(i);
-        for(int j = 0; j < fcols; j ++)
-            std::cout << fi[j]; 
-    }
-    */
+    /*--------------------Query --------------------*/
+    cv::Mat query_pca_features = df_extractor.projectPCA(d_features);
+    std::cout << "query_pca_features size:" <<query_pca_features.rows << " " << query_pca_features.cols <<std::endl;
     
 }

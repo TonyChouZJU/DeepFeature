@@ -18,16 +18,7 @@ void DeepFeatureExtractor::compressPCA(cv::InputArray _pcaset, cv::OutputArray _
     cv::Mat pcaset = _pcaset.getMat();
     _compressed.create(pcaset.rows,  maxComponents, pcaset.type());
 
-    //std::cout <<"Before pca _compressed:"<<_compressed.getMat().row(0) <<std::endl;
     this->projectPCA(_pcaset, _compressed);
-    
-    //std::cout << "特征值:"<<this->pca.eigenvalues << std::endl;//特征值
-     
-    //std::cout <<"特征向量:"<< this->pca.eigenvectors << std::endl;//特征向量
-    //std::cout <<"After pca _compressed:"<<_compressed.getMat().row(0) <<std::endl;
-    //std::cout <<"After pca _compressed rows:"<<_compressed.getMat().rows << "cols:"<<_compressed.getMat().cols<<std::endl;
-    //std::cout <<" reconstructed:" <<this->pca.backProject(_compressed.getMat().row(0)) << std::endl;
-
 }
 
 DeepFeatureExtractor::DeepFeatureExtractor(const string& model_file,

@@ -306,10 +306,6 @@ string
 caffe/proto/caffe.pb.h
 /home/zyb/py-faster-rcnn/caffe-fast-rcnn/include/caffe/util/caffe/proto/caffe.pb.h
 
-/mnt/exhdd/tomorning_dataset/examples/DL_worker/DeepFeatureExtractor.cpp
-DeepFeatureExtractor.hpp
-/mnt/exhdd/tomorning_dataset/examples/DL_worker/DeepFeatureExtractor.hpp
-
 /mnt/exhdd/tomorning_dataset/examples/DL_worker/DeepFeatureExtractor.hpp
 caffe/caffe.hpp
 -
@@ -330,6 +326,14 @@ string
 utility
 -
 vector
+-
+
+/mnt/exhdd/tomorning_dataset/examples/DL_worker/dp_main.cpp
+DeepFeatureExtractor.hpp
+/mnt/exhdd/tomorning_dataset/examples/DL_worker/DeepFeatureExtractor.hpp
+iostream
+-
+iomanip
 -
 
 /usr/local/cuda/include/builtin_types.h
