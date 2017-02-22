@@ -11,6 +11,12 @@
 #include <utility>
 #include <vector>
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
+#include <unistd.h>
+
 using namespace caffe;
 using std::string;
 
@@ -21,6 +27,7 @@ public:
                const string& trained_file,
                const string& mean_file,
                bool gpu_mode=true,
+               int gpu_id=0,
                const string blob_name="pool5");
 
     //std::vector<float> compute(const cv::Mat& img);
@@ -33,6 +40,9 @@ public:
     cv::Mat projectPCA(cv::InputArray vec);
 
     void projectPCA(cv::InputArray _data, cv::OutputArray _data_reduced);
+
+    int pictures2Features(string &dirname, float* features, unsigned int len);
+    int pictures2Features(const vector<string> &dirname, float* features, unsigned int len);
 
 private:
     DeepFeatureExtractor(const DeepFeatureExtractor&) = delete;
@@ -56,8 +66,10 @@ private:
     shared_ptr<Net<float> > net_;
     cv::Size input_geometry_;
     int num_channels_;
+    int feature_dims_;
     cv::Mat mean_;
     string blob_name_;
     cv::PCA pca; 
+
 };
 #endif //CAFFEWORKER_CLASSIFICATION_HPP

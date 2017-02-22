@@ -1,5 +1,34 @@
 #include "DeepFeatureExtractor.hpp"
 
+int DeepFeatureExtractor::pictures2Features(string &dirname, float* features, unsigned int len) {
+    DIR *dp;
+    struct dirent *dirp;
+    std::cout <<"In pictures2Features"<< std::endl;
+    if((dp = opendir(dirname.c_str())) == NULL) 
+        std::cout << "Can't open" <<  dirname <<std::endl;
+
+    int count_img = 0;
+    std::cout <<"In interface:" << dirname <<std::endl;
+    while( (dirp = readdir(dp)) != NULL )
+        //only output filename
+        if(dirp->d_type == 8) {
+            string file_name(dirp->d_name);
+            std::cout <<"Process:"<<file_name <<std::endl;
+            string::size_type idx = file_name.find('.');
+            string postfix_name = file_name.substr(idx+1);
+            if(postfix_name!="jpg")
+                break;
+            
+            string file_name_path = dirname + "/" + file_name; 
+            cv::Mat img = cv::imread(file_name_path, -1);
+            CHECK(!img.empty()) << "Unable to decode image " << file_name_path;
+
+            cv::Mat d_features =  this->compute(img);
+            memcpy(features+count_img*2048, (float*)d_features.data, sizeof(float)*2048);
+            count_img ++;
+        }
+    closedir(dp);
+}
 
 cv::Mat DeepFeatureExtractor::projectPCA(cv::InputArray vec) {
     return this->pca.project(vec);
@@ -25,9 +54,13 @@ DeepFeatureExtractor::DeepFeatureExtractor(const string& model_file,
                        const string& trained_file,
                        const string& mean_file,
                        bool gpu_mode,
+                       int gpu_id,
                        const string blob_name) {
 if (gpu_mode)
+{
     Caffe::set_mode(Caffe::GPU);
+    Caffe::SetDevice(gpu_id);
+}
 else
     Caffe::set_mode(Caffe::CPU);
 
@@ -131,6 +164,7 @@ void DeepFeatureExtractor::SetMean(const string& mean_file) {
      * filled with this value. */
     cv::Scalar channel_mean = cv::mean(mean);
     mean_ = cv::Mat(input_geometry_, mean.type(), channel_mean);
+    std::cout << "mean rows:" <<mean_.rows << " cols:"<< mean_.cols << std::endl;
 }
 /* Wrap the input layer of the network in separate cv::Mat objects
  * (one per channel). This way we save one memcpy operation and we

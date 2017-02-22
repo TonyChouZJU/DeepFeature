@@ -1,1 +1,0 @@
-/mnt/exhdd/tomorning_dataset/examples/DL_worker/CMakeFiles/DPWorker.dir

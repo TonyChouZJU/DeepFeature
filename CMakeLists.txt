@@ -8,6 +8,7 @@ set(Caffe_DIR /home/zyb/py-faster-rcnn/caffe-fast-rcnn)
 set(GNU_DIR /usr/lib/x86_64-linux-gnu/)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(DP_SOURCE_FILES dp_main.cpp DeepFeatureExtractor.cpp DeepFeatureExtractor.hpp)
+SET(CMAKE_BUILD_TYPE "Debug") 
 
 FIND_LIBRARY(GLOG_LIB glog path ${GNU_DIR})
 FIND_LIBRARY(BOOST_LIB boost_system path ${GNU_DIR})
