@@ -1,4 +1,0 @@
-----------Extraction for /home/zyb/Pictures/touxiang.jpg ----------
-Mat features:1 2048
-train_pca_features size:65 64
-query_pca_features size:1 64
