@@ -1,30 +1,105 @@
 #include "DeepFeatureExtractor.hpp"
 
-int DeepFeatureExtractor::pictures2Features(string &dirname, float* features, unsigned int len) {
+
+static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst) {
+    dst.create(static_cast<int>(data.size()), data[0].rows*data[0].cols, CV_32FC1);
+    for(int i = 0; i < data.size(); i++)
+        data[i].copyTo(dst.row(i));
+}
+
+const float* DeepFeatureExtractor::extractFeatures(const string &img_path) {
+    if(this->pca_dims_ > this->feature_dims_)
+        return NULL;
+    cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
+    if(img.empty())
+        return NULL;
+    const float* img_features_ptr =  this->compute(img);
+    cv::Mat pca_feature;
+    if(this->pca_dims_ < this->feature_dims_) {
+        //dont need to copy img_feature to pca_feature
+        cv::Mat img_feature(1, this->feature_dims_, CV_32FC1, const_cast<float*>(img_features_ptr));
+        pca_feature = this->projectPCA(img_feature);
+        return (float*)pca_feature.data;
+    }
+    else
+        return img_features_ptr;
+
+    //query feature normlized is conducted in the following matching process
+    //memcpy(feature, (float*)pca_feature.data, sizeof(float)*this->pca_dims_); 
+}
+
+int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature) {
+    if(this->pca_dims_ > this->feature_dims_)
+        return 1;
+    cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
+    if(img.empty())
+        return 1;
+    const float* img_feature_ptr = this->compute(img);
+    cv::Mat pca_feature;
+    if(this->pca_dims_ < this->feature_dims_) {
+        //dont need to copy img_feature to pca_feature
+        cv::Mat img_feature(1, this->feature_dims_, CV_32FC1, const_cast<float*>(img_feature_ptr));
+        pca_feature = this->projectPCA(img_feature);
+        memcpy(feature, (float*)pca_feature.data, sizeof(float)*this->pca_dims_); 
+    }
+    else
+        memcpy(feature, img_feature_ptr, sizeof(float)*this->pca_dims_); 
+    return 0;
+}
+
+int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* features) {
+    std::vector<cv::Mat> vec_imgs_features;
+    vec_imgs_features.reserve(imgs.size());
+    for(vector<string>::const_iterator citer = imgs.begin(); citer!=imgs.end(); citer++) {
+        cv::Mat img = cv::imread(*citer, CV_LOAD_IMAGE_COLOR);
+        if(img.empty())
+            return 1;
+        const float* d_features_ptr =  this->compute(img);
+        cv::Mat d_features(1, this->feature_dims_, CV_32FC1, const_cast<float*>(d_features_ptr));
+        vec_imgs_features.push_back(d_features.clone());
+    } 
+    if(this->pca_dims_ > this-> feature_dims_ )
+        return 1;
+    if(this->pca_dims_ < this-> feature_dims_ && imgs.size()<this->pca_dims_ )
+        return 1;
+    cv::Mat stack_features;
+    formatFeaturesForPCA(vec_imgs_features, stack_features);
+    cv::Mat train_pca_features;
+    if( this->pca_dims_ < this->feature_dims_)
+        this->compressPCA(stack_features, train_pca_features, this->pca_dims_);
+   else 
+       train_pca_features = stack_features;
+   for(int i=0; i <train_pca_features.rows ; i++) {
+        //L2 normalize
+        cv::normalize(train_pca_features.row(i), train_pca_features.row(i), 1, 0, cv::NORM_L2, -1); 
+        memcpy(features+i*this->pca_dims_, (float*)train_pca_features.ptr<float>(i), sizeof(float)*this->pca_dims_);
+   }
+        //memcpy(features+offset*this->feature_dims_, (float*)d_features.data, sizeof(float)*this->feature_dims_);
+   return 0;
+}
+
+int DeepFeatureExtractor::pictures2Features(string &dirname, float* features) {
     DIR *dp;
     struct dirent *dirp;
-    std::cout <<"In pictures2Features"<< std::endl;
     if((dp = opendir(dirname.c_str())) == NULL) 
         std::cout << "Can't open" <<  dirname <<std::endl;
 
     int count_img = 0;
-    std::cout <<"In interface:" << dirname <<std::endl;
     while( (dirp = readdir(dp)) != NULL )
         //only output filename
         if(dirp->d_type == 8) {
             string file_name(dirp->d_name);
-            std::cout <<"Process:"<<file_name <<std::endl;
             string::size_type idx = file_name.find('.');
             string postfix_name = file_name.substr(idx+1);
             if(postfix_name!="jpg")
                 break;
             
             string file_name_path = dirname + "/" + file_name; 
-            cv::Mat img = cv::imread(file_name_path, -1);
+            cv::Mat img = cv::imread(file_name_path, CV_LOAD_IMAGE_COLOR);
             CHECK(!img.empty()) << "Unable to decode image " << file_name_path;
 
-            cv::Mat d_features =  this->compute(img);
-            memcpy(features+count_img*2048, (float*)d_features.data, sizeof(float)*2048);
+            const float* d_features =  this->compute(img);
+            memcpy(features+count_img * this->feature_dims_, d_features, sizeof(float)*this->feature_dims_);
             count_img ++;
         }
     closedir(dp);
@@ -53,6 +128,7 @@ void DeepFeatureExtractor::compressPCA(cv::InputArray _pcaset, cv::OutputArray _
 DeepFeatureExtractor::DeepFeatureExtractor(const string& model_file,
                        const string& trained_file,
                        const string& mean_file,
+                       int pca_dims,
                        bool gpu_mode,
                        int gpu_id,
                        const string blob_name) {
@@ -81,6 +157,9 @@ else
         << " in the network " << model_file;
     blob_name_ = blob_name;
 
+    this->feature_dims_ = net_->blob_by_name(blob_name_)->count();
+    this->pca_dims_ = pca_dims;
+
     input_layer->Reshape(1, num_channels_,
                          input_geometry_.height, input_geometry_.width);
     /* Forward dimension change to all layers. */
@@ -90,8 +169,8 @@ else
     SetMean(mean_file);
 }
 
-//std::vector<float> DeepFeatureExtractor::compute(const cv::Mat& img) {
-cv::Mat DeepFeatureExtractor::compute(const cv::Mat& img) {
+//cv::Mat DeepFeatureExtractor::compute(const cv::Mat& img) {
+const float* DeepFeatureExtractor::compute(const cv::Mat& img) {
     std::vector<cv::Mat> input_channels;
     WrapInputLayer(input_channels);
 
@@ -103,10 +182,13 @@ cv::Mat DeepFeatureExtractor::compute(const cv::Mat& img) {
     //Blob<float>* output_blob = net_->blob_by_name(blob_name_);
     const boost::shared_ptr<Blob<float>> output_blob = net_->blob_by_name(blob_name_);
     //const float* begin = output_blob->cpu_data();
-    float* begin = output_blob->mutable_cpu_data();
-    const float* end = begin + output_blob->channels();
-    cv::Mat featureMat(1, 2048, CV_32FC1, begin);
-    return featureMat.clone();
+    this->query_feature_ptr = output_blob->cpu_data();
+    //float* begin = output_blob->mutable_cpu_data();
+    //const float* end = begin + output_blob->channels();
+    //cv::Mat featureMat(1, 2048, CV_32FC1, begin);
+    //cv::Mat featureMat(1, this->feature_dims_ , CV_32FC1, const_cast<float*>(begin));
+    //return featureMat.clone();
+    return this->query_feature_ptr;
 }
 
 std::vector<std::vector<float>> DeepFeatureExtractor::compute(const std::vector<cv::Mat> &imgs) {
@@ -164,7 +246,6 @@ void DeepFeatureExtractor::SetMean(const string& mean_file) {
      * filled with this value. */
     cv::Scalar channel_mean = cv::mean(mean);
     mean_ = cv::Mat(input_geometry_, mean.type(), channel_mean);
-    std::cout << "mean rows:" <<mean_.rows << " cols:"<< mean_.cols << std::endl;
 }
 /* Wrap the input layer of the network in separate cv::Mat objects
  * (one per channel). This way we save one memcpy operation and we
