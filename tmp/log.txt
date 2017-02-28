@@ -1,0 +1,8 @@
+load train file list
+Training time:321959
+40vs19
+40vs19
+63vs20
+85vs74
+All accuracy:0.997963
+average test time:40.2322

@@ -14,12 +14,11 @@ const float* DeepFeatureExtractor::extractFeatures(const string &img_path) {
     if(img.empty())
         return NULL;
     const float* img_features_ptr =  this->compute(img);
-    cv::Mat pca_feature;
     if(this->pca_dims_ < this->feature_dims_) {
         //dont need to copy img_feature to pca_feature
         cv::Mat img_feature(1, this->feature_dims_, CV_32FC1, const_cast<float*>(img_features_ptr));
-        pca_feature = this->projectPCA(img_feature);
-        return (float*)pca_feature.data;
+        this->pca_feature = this->projectPCA(img_feature);
+        return (float*)this->pca_feature.data;
     }
     else
         return img_features_ptr;
@@ -35,12 +34,11 @@ int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature
     if(img.empty())
         return 1;
     const float* img_feature_ptr = this->compute(img);
-    cv::Mat pca_feature;
     if(this->pca_dims_ < this->feature_dims_) {
         //dont need to copy img_feature to pca_feature
         cv::Mat img_feature(1, this->feature_dims_, CV_32FC1, const_cast<float*>(img_feature_ptr));
         pca_feature = this->projectPCA(img_feature);
-        memcpy(feature, (float*)pca_feature.data, sizeof(float)*this->pca_dims_); 
+        memcpy(feature, (float*)this->pca_feature.data, sizeof(float)*this->pca_dims_); 
     }
     else
         memcpy(feature, img_feature_ptr, sizeof(float)*this->pca_dims_); 

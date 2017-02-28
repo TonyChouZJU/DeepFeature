@@ -9,6 +9,7 @@ set(GNU_DIR /usr/lib/x86_64-linux-gnu/)
 set(COSPEAK_DIR /mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(DP_SOURCE_FILES dp_main.cpp DeepFeatureExtractor.cpp DeepFeatureExtractor.hpp)
+set(TEST_SOURCE_FILES accu_test.cpp DeepFeatureExtractor.cpp DeepFeatureExtractor.hpp)
 SET(CMAKE_BUILD_TYPE "Debug") 
 
 FIND_LIBRARY(GLOG_LIB glog path ${GNU_DIR})
@@ -21,3 +22,6 @@ include_directories(${Caffe_DIR}/include)
 
 add_executable(DPWorker ${DP_SOURCE_FILES})
 target_link_libraries(DPWorker ${OpenCV_LIBS} ${GLOG_LIB} ${CAFFE_LIB} ${BOOST_LIB} ${COSPEAK_LIB})
+
+add_executable(TESTWorker ${TEST_SOURCE_FILES})
+target_link_libraries(TESTWorker ${OpenCV_LIBS} ${GLOG_LIB} ${CAFFE_LIB} ${BOOST_LIB} ${COSPEAK_LIB})

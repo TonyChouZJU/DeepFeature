@@ -77,6 +77,7 @@ private:
     string blob_name_;
     cv::PCA pca; 
     const float* query_feature_ptr;
+    cv::Mat pca_feature;
 
 };
 static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst); 

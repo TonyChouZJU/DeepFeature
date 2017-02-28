@@ -1,11 +1,15 @@
-import _init_paths
 from generate_anchors import generate_anchors
 import numpy as np
 import cv2
 import random
 from PIL import Image, ImageEnhance, ImageFilter
-from third_party.ImageFilterExtension import *
 import sys
+import os
+
+third_party_dir = './third_party'
+sys.path.insert(0, third_party_dir)
+
+from third_party.ImageFilterExtension import *
 
 class WLImageFilter():
     def __init__(self):
@@ -58,38 +62,23 @@ class VideoBuilder():
             image_list_anchors += image_anchors
         return image_list_anchors
 
-    def video2Pictures(self, video_paths, image_dir, num_frames=200):
+    def video2Pictures(self, video_path, image_dir, num_frames=200):
         num_frames = num_frames/len(self._anchors)
         image_list = list()
-        for video_path in video_paths:
-            try:
-                cap = cv2.VideoCapture(video_path)
-            except Exception as e:
-                print('video loading error')
-
-            while(cap.isOpened()):
-                ret, frame = cap.read()
-                if not ret:
-                    break
-                #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                frame = cv2.transpose(frame)
-                frame = cv2.flip(frame, 1)
-                image_list.append(frame)
-            #Release everything if job is finished
-            cap.release()
+        print video_path
+        for img_file in os.listdir(video_path):
+            img_file_path = os.path.join(video_path, img_file)
+            frame = cv2.imread(img_file_path)
+            image_list.append(frame)
         #shuffle video frames
         random.shuffle(image_list)
         #preprocess images or enhance images
         sv_images_list = self._anchorImages(image_list[:num_frames])
+        ori_img = cv2.imread(img_file_path)
+        ori_img = cv2.resize(ori_img, (256, 256))
+        sv_images_list.append(ori_img)
         for idx, sv_image in enumerate(sv_images_list):
-            if idx % 4 == 0:
-                sv_image, func_name  = self._wl_filtered.enhance_img(sv_image)
-                #cv2.imwrite(image_dir + '/test_' + str(idx) +  '.jpg', sv_image) 
-                #cv2.imwrite(image_dir + '/test_' + str(idx) + '_' + func_name + '.jpg', sv_image) 
-            elif idx % 4 == 1:
-                sv_image, func_name = self._wl_filtered.filter_img(sv_image)
-                #cv2.imwrite(image_dir + '/test_' + str(idx) + '_' + func_name + '.jpg', sv_image) 
-            cv2.imwrite(image_dir + '/test_' + str(idx) +  '.jpg', sv_image) 
+            cv2.imwrite(image_dir + '/test_' + str(idx) +  '.jpg', cv2.resize(sv_image,(256, 256))) 
         return 1
 
 
@@ -134,10 +123,15 @@ class AnchorTarget():
 #vbuilder.video2Pictures(['/mnt/exhdd/tomorning_dataset/wonderland/cv/deep_retriver/imgs_retriver/Oss_task_2/26500/26500_0.mov'], '/mnt/exhdd/tomorning_dataset/wonderland/cv/deep_retriver/pyTrainVideo/test_imgs', 100)
 if __name__ == '__main__':
     videoList=[]
-    for item in sys.argv[1:-1]:
-        videoList.append(item)
-    sv_dir = sys.argv[-1]
+    root_dir = '/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/deep_retriver/paintings_retriver/Task1/special'
+    sv_dir = '/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/deep_retriver/paintings_retriver/Task1_save/special/Train_color'
+
     vbuilder =  VideoBuilder()
-    if not vbuilder.video2Pictures(videoList, sv_dir,100):
-        exit(1)
-    exit(0)
+    for i in range(74):
+        i = i + 1
+        sub_dir = os.path.join(root_dir, str(i))
+        videoList.append(sub_dir)
+        sv_sub_dir = os.path.join(sv_dir, str(i))
+        if not os.path.exists(sv_sub_dir):
+            os.mkdir(sv_sub_dir)
+        vbuilder.video2Pictures(sub_dir, sv_sub_dir, 5)
