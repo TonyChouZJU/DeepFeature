@@ -1,56 +1,5 @@
 #include "DeepFeatureExtractor.hpp"
-#include "MBS.hpp"
 
-void postprocessMbs(const cv::Mat &src)
-{
-    cv::Mat bwImage;
-    //cv::cvtColor(res, bwImage, CV_RGB2GRAY);
-    res.convertTo(bwImage,CV_8UC1);
-
-    // Get the contours of the connected components
-    vector<vector<Point>> contours;
-    //findContours的输入是二值图像
-    findContours(bwImage,
-                 contours, // a vector of contours
-                 CV_RETR_EXTERNAL, // retrieve the external contours
-                 CV_CHAIN_APPROX_NONE); // retrieve all pixels of each contours
-
-    // Print contours' length轮廓的个数
-    cout << "Contours: " << contours.size() << endl;
-    /*
-    vector<vector<Point>>::const_iterator itContours= contours.begin();
-    for ( ; itContours!=contours.end(); ++itContours) {
-
-        cout << "Size: " << itContours->size() << endl;//每个轮廓包含的点数
-    }
-
-    // draw black contours on white image
-    Mat result(res.size(),CV_8U,Scalar(0));
-    drawContours(result,contours,      //画出轮廓
-                 -1, // draw all contours
-                 Scalar(255), // in black
-                 2); // with a thickness of 2
-    */
-
-    int largest_area=0;
-    int largest_contour_index=0;
-    Rect bounding_rect;
-    vector<Vec4i> hierarchy;
-    for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
-    {
-        double a=contourArea( contours[i],false);  //  Find the area of contour
-        if(a>largest_area){
-            largest_area=a;
-            largest_contour_index=i;                //Store the index of largest contour
-            bounding_rect=boundingRect(contours[i]); // Find the bounding rectangle for biggest contour
-        }
-
-    }
-
-    // testing the bounding box
-    Rect r0= boundingRect(Mat(contours[0]));//boundingRect获取这个外接矩形
-    return src(r0);
-}
 
 static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst) {
     dst.create(static_cast<int>(data.size()), data[0].rows*data[0].cols, CV_32FC1);
@@ -62,12 +11,6 @@ const float* DeepFeatureExtractor::extractFeatures(const string &img_path) {
     if(this->pca_dims_ > this->feature_dims_)
         return NULL;
     cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
-    if(this->retriver_type_!=0)
-    {
-        img = computeMBS(img);
-        img = postprocessMbs(img);
-    }
-
     if(img.empty())
         return NULL;
     const float* img_features_ptr =  this->compute(img);

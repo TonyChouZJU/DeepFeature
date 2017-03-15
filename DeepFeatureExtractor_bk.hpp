@@ -27,7 +27,6 @@ public:
                const string& trained_file,
                const string& mean_file,
                int pca_dims,
-               int retriver_type,
                bool gpu_mode=true,
                int gpu_id=0,
                const string blob_name="pool5");
@@ -79,7 +78,6 @@ private:
     cv::PCA pca; 
     const float* query_feature_ptr;
     cv::Mat pca_feature;
-    int retriver_type_;
 
 };
 static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst); 
