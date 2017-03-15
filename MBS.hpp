@@ -71,3 +71,7 @@ Mat doWork(
         bool remove_border,
 	bool use_geodesic
 	);
+
+void Reconstruct(Mat src,Mat mask,Mat& dst);
+cv::Mat morpySmooth(cv::Mat I,int radius);
+cv::Mat enhanceConstrast(cv::Mat I,int b=10);
