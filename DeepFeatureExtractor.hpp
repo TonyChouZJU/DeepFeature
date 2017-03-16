@@ -1,6 +1,7 @@
 #ifndef CAFFEWORKER_RETRIEVER_HPP
 #define CAFFEWORKER_RETRIEVER_HPP
 #include <caffe/caffe.hpp>
+//#include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -18,6 +19,8 @@
 #include <unistd.h>
 
 using namespace caffe;
+//using namespace cv;
+//using namespace std;
 using std::string;
 
 

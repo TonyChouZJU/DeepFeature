@@ -27,13 +27,16 @@
 
 #include <fstream>
 #include <vector>
-#include <opencv2/opencv.hpp>
+//#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 #include <ctime>
 #include <cmath>
 #include<unistd.h>
-using namespace std;
-using namespace cv;
+//using namespace std;
+//using namespace cv;
 static cv::RNG MBS_RNG;
 
 class MBS
@@ -54,11 +57,11 @@ private:
 	void computeBorderPriorMap(float reg, float marginRatio);
 };
 
-void rasterScan(const cv::Mat& featMap, cv::Mat& map, cv::Mat& lb, Mat& ub);
-void invRasterScan(const Mat& featMap, Mat& map, Mat& lb, Mat& ub);
-float getThreshForGeo(const Mat& src);
-float getThreshForGeo(const Mat& src);
-void invRasterScanGeo(const Mat& featMap, Mat& map, float thresh);
+void rasterScan(const cv::Mat& featMap, cv::Mat& map, cv::Mat& lb, cv::Mat& ub);
+void invRasterScan(const cv::Mat& featMap, cv::Mat& map, cv::Mat& lb, cv::Mat& ub);
+float getThreshForGeo(const cv::Mat& src);
+float getThreshForGeo(const cv::Mat& src);
+void invRasterScanGeo(const cv::Mat& featMap, cv::Mat& map, float thresh);
 
 cv::Mat computeCWS(const cv::Mat src, float reg, float marginRatio);
 cv::Mat fastMBS(const std::vector<cv::Mat> featureMaps);
@@ -66,14 +69,14 @@ cv::Mat fastGeodesic(const std::vector<cv::Mat> featureMaps);
 
 int findFrameMargin(const cv::Mat& img, bool reverse);
 bool removeFrame(const cv::Mat& inImg, cv::Mat& outImg, cv::Rect &roi);
-Mat doWork(
-	const Mat& src,
+cv::Mat doWork(
+	const cv::Mat& src,
 	bool use_lab,
-        bool remove_border,
+    bool remove_border,
 	bool use_geodesic
 	);
 
-void Reconstruct(Mat src,Mat mask,Mat& dst);
+void Reconstruct(cv::Mat src, cv::Mat mask, cv::Mat& dst);
 cv::Mat morpySmooth(cv::Mat I,int radius);
 cv::Mat enhanceConstrast(cv::Mat I,int b=10);
-Mat computeMBS(const cv::Mat& im);
+cv::Mat computeMBS(const cv::Mat& im);

@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
                   << " mean.binaryproto img.jpg" << std::endl;
         exit(1);
     }
-    ::google::InitGoogleLogging(argv[0]);
+//    ::google::InitGoogleLogging(argv[0]);
 
     string model_file   = argv[1];
     string trained_file = argv[2];
@@ -36,10 +36,10 @@ int main(int argc, char** argv) {
     std::cout<<"Training time:" << std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count()<<"\n";
 
     for(int i=0;i< 100; i++){
-    start = std::chrono::system_clock::now();
-    const float* query_ptr = df_extractor.extractFeatures(vec_imgs[0]);
-    std::pair<int, float> query_result = wildcard_test(query_ptr, dataset_ptr, n_samples, m_features); 
-    std::cout<<std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count()<<"\n";
+        start = std::chrono::system_clock::now();
+        const float* query_ptr = df_extractor.extractFeatures(vec_imgs[0]);
+        std::pair<int, float> query_result = wildcard_test(query_ptr, dataset_ptr, n_samples, m_features); 
+        std::cout<<std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count()<<"\n";
     }
 
 }

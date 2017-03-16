@@ -1,41 +1,26 @@
 #include "DeepFeatureExtractor.hpp"
 #include "MBS.hpp"
 
-void postprocessMbs(const cv::Mat &src)
+cv::Mat postprocessMbs(const cv::Mat &src)
 {
     cv::Mat bwImage;
     //cv::cvtColor(res, bwImage, CV_RGB2GRAY);
-    res.convertTo(bwImage,CV_8UC1);
+    src.convertTo(bwImage,CV_8UC1);
 
     // Get the contours of the connected components
-    vector<vector<Point>> contours;
+    vector<vector<cv::Point>> contours;
     //findContours的输入是二值图像
-    findContours(bwImage,
+    cv::findContours(bwImage,
                  contours, // a vector of contours
                  CV_RETR_EXTERNAL, // retrieve the external contours
                  CV_CHAIN_APPROX_NONE); // retrieve all pixels of each contours
 
     // Print contours' length轮廓的个数
-    cout << "Contours: " << contours.size() << endl;
-    /*
-    vector<vector<Point>>::const_iterator itContours= contours.begin();
-    for ( ; itContours!=contours.end(); ++itContours) {
-
-        cout << "Size: " << itContours->size() << endl;//每个轮廓包含的点数
-    }
-
-    // draw black contours on white image
-    Mat result(res.size(),CV_8U,Scalar(0));
-    drawContours(result,contours,      //画出轮廓
-                 -1, // draw all contours
-                 Scalar(255), // in black
-                 2); // with a thickness of 2
-    */
-
+    std::cout << "Contours: " << contours.size() << std::endl;
     int largest_area=0;
     int largest_contour_index=0;
-    Rect bounding_rect;
-    vector<Vec4i> hierarchy;
+    cv::Rect bounding_rect;
+    vector<cv::Vec4i> hierarchy;
     for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
     {
         double a=contourArea( contours[i],false);  //  Find the area of contour
@@ -48,7 +33,7 @@ void postprocessMbs(const cv::Mat &src)
     }
 
     // testing the bounding box
-    Rect r0= boundingRect(Mat(contours[0]));//boundingRect获取这个外接矩形
+    cv::Rect r0= boundingRect(cv::Mat(contours[0]));//boundingRect获取这个外接矩形
     return src(r0);
 }
 
@@ -184,9 +169,10 @@ DeepFeatureExtractor::DeepFeatureExtractor(const string& model_file,
                        const string& trained_file,
                        const string& mean_file,
                        int pca_dims,
+                       int retriver_type, 
                        bool gpu_mode,
                        int gpu_id,
-                       const string blob_name) {
+                       const string blob_name): retriver_type_(retriver_type) {
 if (gpu_mode)
 {
     Caffe::set_mode(Caffe::GPU);
