@@ -4,3 +4,5 @@ CMakeFiles/
 CMakeCache.txt
 .tmp.txt
 *swp
+*.jpg
+*.bmp
