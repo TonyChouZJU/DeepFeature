@@ -23,14 +23,13 @@ using namespace caffe;
 //using namespace std;
 using std::string;
 
-
+enum RETRIEVER_TYPE{BASE_RETRIEVER, IM_RETRIEVER};
 class DeepFeatureExtractor {
 public:
     DeepFeatureExtractor(const string& model_file,
                const string& trained_file,
                const string& mean_file,
                int pca_dims,
-               int retriver_type,
                bool gpu_mode=true,
                int gpu_id=0,
                const string blob_name="pool5");
@@ -45,8 +44,8 @@ public:
     int pictures2Features(string &dirname, float* features);
     int pictures2Features(const vector<string> &imgs, float* features);
 
-    int extractFeatures(const string &img_path, float* feature);
-    const float* extractFeatures(const string &img_path);
+    int extractFeatures(const string &img_path, float* feature, RETRIEVER_TYPE retriver_type=BASE_RETRIEVER);
+    const float* extractFeatures(const string &img_path, RETRIEVER_TYPE retriver_type=BASE_RETRIEVER);
 
 private:
     DeepFeatureExtractor(const DeepFeatureExtractor&) = delete;
@@ -82,7 +81,7 @@ private:
     cv::PCA pca; 
     const float* query_feature_ptr;
     cv::Mat pca_feature;
-    int retriver_type_;
+//    int retriver_type_;
 
 };
 static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst); 

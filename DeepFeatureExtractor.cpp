@@ -1,12 +1,8 @@
 #include "DeepFeatureExtractor.hpp"
 #include "MBS.hpp"
 
-cv::Mat postprocessMbs(const cv::Mat &src)
+cv::Mat postprocessMbs(const cv::Mat &src, const cv::Mat &bwImage)
 {
-    cv::Mat bwImage;
-    //cv::cvtColor(res, bwImage, CV_RGB2GRAY);
-    src.convertTo(bwImage,CV_8UC1);
-
     // Get the contours of the connected components
     vector<vector<cv::Point>> contours;
     //findContours的输入是二值图像
@@ -33,8 +29,7 @@ cv::Mat postprocessMbs(const cv::Mat &src)
     }
 
     // testing the bounding box
-    cv::Rect r0= boundingRect(cv::Mat(contours[0]));//boundingRect获取这个外接矩形
-    return src(r0);
+    return src(bounding_rect);
 }
 
 static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst) {
@@ -43,14 +38,21 @@ static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst) {
         data[i].copyTo(dst.row(i));
 }
 
-const float* DeepFeatureExtractor::extractFeatures(const string &img_path) {
+const float* DeepFeatureExtractor::extractFeatures(const string &img_path,RETRIEVER_TYPE retriver_type) {
     if(this->pca_dims_ > this->feature_dims_)
         return NULL;
     cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
-    if(this->retriver_type_!=0)
+    cv::Mat bwImg;
+    if(retriver_type !=BASE_RETRIEVER)
     {
-        img = computeMBS(img);
-        img = postprocessMbs(img);
+        cv::Mat res = computeMBS(img);
+        res.convertTo(bwImg,CV_8UC1);
+        img = postprocessMbs(img, bwImg);
+        //temp
+        string::size_type found = img_path.find_last_of("/\\");
+        string img_file_name = img_path.substr(found+1);
+        string to_write_name = string("/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_save/")+img_file_name;
+        cv::imwrite(to_write_name.c_str(), img);
     }
 
     if(img.empty())
@@ -69,10 +71,17 @@ const float* DeepFeatureExtractor::extractFeatures(const string &img_path) {
     //memcpy(feature, (float*)pca_feature.data, sizeof(float)*this->pca_dims_); 
 }
 
-int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature) {
+int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature, RETRIEVER_TYPE retriver_type) {
     if(this->pca_dims_ > this->feature_dims_)
         return 1;
     cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
+    cv::Mat bwImg;
+    if(retriver_type !=0)
+    {
+        cv::Mat res = computeMBS(img);
+        res.convertTo(bwImg,CV_8UC1);
+        img = postprocessMbs(img, bwImg);
+    }
     if(img.empty())
         return 1;
     const float* img_feature_ptr = this->compute(img);
@@ -169,10 +178,9 @@ DeepFeatureExtractor::DeepFeatureExtractor(const string& model_file,
                        const string& trained_file,
                        const string& mean_file,
                        int pca_dims,
-                       int retriver_type, 
                        bool gpu_mode,
                        int gpu_id,
-                       const string blob_name): retriver_type_(retriver_type) {
+                       const string blob_name){
 if (gpu_mode)
 {
     Caffe::set_mode(Caffe::GPU);

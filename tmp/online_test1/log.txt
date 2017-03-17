@@ -1,0 +1,170 @@
+load train file list
+Training time:92383
+computing MBD map:  0.009516 s
+postprocessing :  0.008435 s
+total :  0.017951 s
+Contours: 1
+computing MBD map:  0.01009 s
+postprocessing :  0.02682 s
+total :  0.03691 s
+Contours: 1
+computing MBD map:  0.009045 s
+postprocessing :  0.009484 s
+total :  0.018529 s
+Contours: 1
+computing MBD map:  0.009911 s
+postprocessing :  0.019127 s
+total :  0.029038 s
+Contours: 1
+computing MBD map:  0.009104 s
+postprocessing :  0.009286 s
+total :  0.01839 s
+Contours: 1
+computing MBD map:  0.009383 s
+postprocessing :  0.025756 s
+total :  0.035139 s
+Contours: 1
+computing MBD map:  0.009304 s
+postprocessing :  0.011542 s
+total :  0.020846 s
+Contours: 1
+computing MBD map:  0.009331 s
+postprocessing :  0.014457 s
+total :  0.023788 s
+Contours: 1
+computing MBD map:  0.009504 s
+postprocessing :  0.013866 s
+total :  0.02337 s
+Contours: 1
+computing MBD map:  0.009164 s
+postprocessing :  0.010634 s
+total :  0.019798 s
+Contours: 1
+computing MBD map:  0.00919 s
+postprocessing :  0.013557 s
+total :  0.022747 s
+Contours: 1
+computing MBD map:  0.009108 s
+postprocessing :  0.008641 s
+total :  0.017749 s
+Contours: 1
+computing MBD map:  0.009598 s
+postprocessing :  0.010699 s
+total :  0.020297 s
+Contours: 1
+computing MBD map:  0.009036 s
+postprocessing :  0.009454 s
+total :  0.01849 s
+Contours: 1
+computing MBD map:  0.010129 s
+postprocessing :  0.015998 s
+total :  0.026127 s
+Contours: 1
+23vs25
+computing MBD map:  0.009156 s
+postprocessing :  0.012324 s
+total :  0.02148 s
+Contours: 1
+computing MBD map:  0.009731 s
+postprocessing :  0.015126 s
+total :  0.024857 s
+Contours: 1
+computing MBD map:  0.010017 s
+postprocessing :  0.009066 s
+total :  0.019083 s
+Contours: 1
+computing MBD map:  0.009733 s
+postprocessing :  0.016614 s
+total :  0.026347 s
+Contours: 3
+computing MBD map:  0.009426 s
+postprocessing :  0.008685 s
+total :  0.018111 s
+Contours: 1
+computing MBD map:  0.010289 s
+postprocessing :  0.013654 s
+total :  0.023943 s
+Contours: 1
+computing MBD map:  0.009595 s
+postprocessing :  0.015624 s
+total :  0.025219 s
+Contours: 1
+computing MBD map:  0.009539 s
+postprocessing :  0.015605 s
+total :  0.025144 s
+Contours: 1
+computing MBD map:  0.009292 s
+postprocessing :  0.011734 s
+total :  0.021026 s
+Contours: 1
+23vs65
+computing MBD map:  0.01104 s
+postprocessing :  0.008295 s
+total :  0.019335 s
+Contours: 1
+computing MBD map:  0.010232 s
+postprocessing :  0.008303 s
+total :  0.018535 s
+Contours: 1
+computing MBD map:  0.009459 s
+postprocessing :  0.011486 s
+total :  0.020945 s
+Contours: 1
+computing MBD map:  0.009748 s
+postprocessing :  0.016815 s
+total :  0.026563 s
+Contours: 1
+computing MBD map:  0.00967 s
+postprocessing :  0.021235 s
+total :  0.030905 s
+Contours: 1
+computing MBD map:  0.01023 s
+postprocessing :  0.009305 s
+total :  0.019535 s
+Contours: 1
+computing MBD map:  0.013396 s
+postprocessing :  0.025845 s
+total :  0.039241 s
+Contours: 2
+computing MBD map:  0.009461 s
+postprocessing :  0.011303 s
+total :  0.020764 s
+Contours: 1
+computing MBD map:  0.010285 s
+postprocessing :  0.011227 s
+total :  0.021512 s
+Contours: 1
+computing MBD map:  0.009198 s
+postprocessing :  0.009104 s
+total :  0.018302 s
+Contours: 1
+computing MBD map:  0.00676 s
+postprocessing :  0.005719 s
+total :  0.012479 s
+Contours: 1
+computing MBD map:  0.009574 s
+postprocessing :  0.01049 s
+total :  0.020064 s
+Contours: 1
+computing MBD map:  0.009241 s
+postprocessing :  0.012231 s
+total :  0.021472 s
+Contours: 1
+computing MBD map:  0.009869 s
+postprocessing :  0.012125 s
+total :  0.021994 s
+Contours: 2
+computing MBD map:  0.010291 s
+postprocessing :  0.011025 s
+total :  0.021316 s
+Contours: 1
+computing MBD map:  0.009145 s
+postprocessing :  0.006624 s
+total :  0.015769 s
+Contours: 1
+computing MBD map:  0.009426 s
+postprocessing :  0.009004 s
+total :  0.01843 s
+Contours: 2
+All accuracy:0.951219
+average test time:63.3659

@@ -11,10 +11,10 @@
 #include <iterator>
 
 int main(int argc, char** argv) {
-    if (argc != 5) {
+    if (argc != 4) {
         std::cerr << "Usage: " << argv[0]
                   << " deploy.prototxt network.caffemodel"
-                  << " mean.binaryproto img.jpg" << std::endl;
+                  << " mean.binaryproto" << std::endl;
         exit(1);
     }
     ::google::InitGoogleLogging(argv[0]);
@@ -23,9 +23,9 @@ int main(int argc, char** argv) {
     string trained_file = argv[2];
     string mean_file    = argv[3];
     int m_features = 2048;
-    DeepFeatureExtractor df_extractor(model_file, trained_file, mean_file, m_features, true);
+    DeepFeatureExtractor df_extractor(model_file, trained_file, mean_file, m_features, true, 0);
 
-    std::ifstream train_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/train_file_list.txt", ios::in);
+    std::ifstream train_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test1/train_file_list.txt", ios::in);
     string s;
     vector<string> train_file_vec;
     vector<string> train_label_vec;
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     std::cout<<"Training time:" << std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count()<<"\n";
 
 
-    std::ifstream test_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/test_file_list.txt", ios::in);
+    std::ifstream test_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test1/test_file_list.txt", ios::in);
     string s_test;
     string query_image_path;
     string test_label;
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
             query_image_path = s_test.substr(0, position);
             test_label = s_test.substr(position+1);
             start = std::chrono::system_clock::now();
-            const float* query_ptr = df_extractor.extractFeatures(query_image_path);
+            const float* query_ptr = df_extractor.extractFeatures(query_image_path, IM_RETRIEVER);
             std::pair<int, float> query_result = wildcard_test(query_ptr, dataset_ptr, n_samples, m_features); 
             string query_label = train_label_vec[query_result.first];
             all_time += std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count();
