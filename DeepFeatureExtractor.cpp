@@ -12,7 +12,7 @@ cv::Mat postprocessMbs(const cv::Mat &src, const cv::Mat &bwImage)
                  CV_CHAIN_APPROX_NONE); // retrieve all pixels of each contours
 
     // Print contours' length轮廓的个数
-    std::cout << "Contours: " << contours.size() << std::endl;
+    //std::cout << "Contours: " << contours.size() << std::endl;
     int largest_area=0;
     int largest_contour_index=0;
     cv::Rect bounding_rect;
@@ -27,9 +27,17 @@ cv::Mat postprocessMbs(const cv::Mat &src, const cv::Mat &bwImage)
         }
 
     }
-
+    if(bounding_rect.height < 200 || bounding_rect.width <200) {
+        int square_size = ((src.cols > src.rows) ? src.rows : src.cols) ;
+        //bounding_rect.x = (src.cols - square_size)/2 ;
+        //bounding_rect.y = (src.rows - square_size)/2 ;
+        //bounding_rect.width = square_size;
+        //bounding_rect.height = square_size;
+        return src;
+    }
+    else
     // testing the bounding box
-    return src(bounding_rect);
+        return src(bounding_rect);
 }
 
 static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst) {
@@ -101,8 +109,15 @@ int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* f
     vec_imgs_features.reserve(imgs.size());
     for(vector<string>::const_iterator citer = imgs.begin(); citer!=imgs.end(); citer++) {
         cv::Mat img = cv::imread(*citer, CV_LOAD_IMAGE_COLOR);
-        if(img.empty())
-            return 1;
+        if(img.empty()){
+            if(vec_imgs_features.size()<1)
+                //The First Image is Empty
+                return 1;
+            else
+                vec_imgs_features.push_back(vec_imgs_features.back());
+           continue; 
+         }
+            //return 1;
         const float* d_features_ptr =  this->compute(img);
         cv::Mat d_features(1, this->feature_dims_, CV_32FC1, const_cast<float*>(d_features_ptr));
         vec_imgs_features.push_back(d_features.clone());
@@ -111,6 +126,7 @@ int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* f
         return 1;
     if(this->pca_dims_ < this-> feature_dims_ && imgs.size()<this->pca_dims_ )
         return 1;
+
     cv::Mat stack_features;
     formatFeaturesForPCA(vec_imgs_features, stack_features);
     cv::Mat train_pca_features;
@@ -118,6 +134,7 @@ int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* f
         this->compressPCA(stack_features, train_pca_features, this->pca_dims_);
    else 
        train_pca_features = stack_features;
+   std::cout <<"train pca features rows:"<<train_pca_features.rows<<std::endl;
    for(int i=0; i <train_pca_features.rows ; i++) {
         //L2 normalize
         cv::normalize(train_pca_features.row(i), train_pca_features.row(i), 1, 0, cv::NORM_L2, -1); 

@@ -621,9 +621,9 @@ Mat computeMBS(const cv::Mat& im)
 	t4=clock();
 	resize(smallres,res,Size(im.cols,im.rows));
 
-	cout<<"computing MBD map:  "<<(t1-start)/CLOCKS_PER_SEC<<" s"<<endl;
-	cout<<"postprocessing :  "<<(t4-t1)/CLOCKS_PER_SEC<<" s"<<endl;
-	cout<<"total :  "<<(t4-start)/CLOCKS_PER_SEC<<" s"<<endl;
+	//cout<<"computing MBD map:  "<<(t1-start)/CLOCKS_PER_SEC<<" s"<<endl;
+	//cout<<"postprocessing :  "<<(t4-t1)/CLOCKS_PER_SEC<<" s"<<endl;
+	//cout<<"total :  "<<(t4-start)/CLOCKS_PER_SEC<<" s"<<endl;
 	return res;
 }
 

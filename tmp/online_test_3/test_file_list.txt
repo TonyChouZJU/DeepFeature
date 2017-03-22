@@ -1,0 +1,5 @@
+/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/1.jpg 54
+/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/3.jpg 54
+/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/4.jpg 54
+/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/5.jpg 54
+
