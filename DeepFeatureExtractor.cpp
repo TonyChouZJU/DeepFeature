@@ -57,10 +57,12 @@ const float* DeepFeatureExtractor::extractFeatures(const string &img_path,RETRIE
         res.convertTo(bwImg,CV_8UC1);
         img = postprocessMbs(img, bwImg);
         //temp
+        /*
         string::size_type found = img_path.find_last_of("/\\");
         string img_file_name = img_path.substr(found+1);
         string to_write_name = string("/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_save/")+img_file_name;
         cv::imwrite(to_write_name.c_str(), img);
+        */
     }
 
     if(img.empty())
