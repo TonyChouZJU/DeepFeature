@@ -23,7 +23,7 @@ using namespace caffe;
 //using namespace std;
 using std::string;
 
-enum RETRIEVER_TYPE{BASE_RETRIEVER, IM_RETRIEVER};
+enum RETRIEVER_TYPE{BASE_RETRIEVER, IM_RETRIEVER, PAINTING_RETRIEVER};
 class DeepFeatureExtractor {
 public:
     DeepFeatureExtractor(const string& model_file,
@@ -42,7 +42,7 @@ public:
     void projectPCA(cv::InputArray _data, cv::OutputArray _data_reduced);
 
     int pictures2Features(string &dirname, float* features);
-    int pictures2Features(const vector<string> &imgs, float* features);
+    int pictures2Features(const vector<string> &imgs, float* features, RETRIEVER_TYPE retriver_type=BASE_RETRIEVER);
 
     int extractFeatures(const string &img_path, float* feature, RETRIEVER_TYPE retriver_type=BASE_RETRIEVER);
     const float* extractFeatures(const string &img_path, RETRIEVER_TYPE retriver_type=BASE_RETRIEVER);
@@ -66,6 +66,8 @@ private:
 
     //cv::Mat compute(const cv::Mat& img);
     const float* compute(const cv::Mat& img);
+
+    const float* computePainting(const cv::Mat& img) ;
 
     std::vector<std::vector<float> > compute(const std::vector<cv::Mat>& imgs);
 

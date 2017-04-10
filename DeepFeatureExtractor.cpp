@@ -11,6 +11,17 @@ cv::Mat postprocessMbs(const cv::Mat &src, const cv::Mat &bwImage)
                  CV_RETR_EXTERNAL, // retrieve the external contours
                  CV_CHAIN_APPROX_NONE); // retrieve all pixels of each contours
 
+    //Eliminate too short or too long contours
+    int cmin = 100; //minimum contour length
+    std::vector<std::vector<cv::Point> >::iterator itc= contours.begin();
+    while(itc!=contours.end()){
+        if(itc->size()< cmin )
+            itc=contours.erase(itc);
+        else
+            ++itc;
+
+    }
+
     // Print contours' length轮廓的个数
     //std::cout << "Contours: " << contours.size() << std::endl;
     int largest_area=0;
@@ -27,15 +38,18 @@ cv::Mat postprocessMbs(const cv::Mat &src, const cv::Mat &bwImage)
         }
 
     }
-    if(bounding_rect.height < 200 || bounding_rect.width <200) {
-        int square_size = ((src.cols > src.rows) ? src.rows : src.cols) ;
+    float bd_rect_height = bounding_rect.height*1.0;
+    float bd_rect_width = bounding_rect.width*1.0;
+    //if(bd_rect_width < 100.0 || bd_rect_height <100.0 || bd_rect_width > bd_rect_height*3 || bd_rect_height > bd_rect_width*3) {
+    if(bd_rect_width*bd_rect_height <= static_cast<float>(src.cols * src.rows)/64) {
+        //int square_size = ((src.cols > src.rows) ? src.rows : src.cols) ;
         //bounding_rect.x = (src.cols - square_size)/2 ;
         //bounding_rect.y = (src.rows - square_size)/2 ;
         //bounding_rect.width = square_size;
         //bounding_rect.height = square_size;
-        return src;
-    }
-    else
+       return src;
+   }
+   else
     // testing the bounding box
         return src(bounding_rect);
 }
@@ -50,6 +64,14 @@ const float* DeepFeatureExtractor::extractFeatures(const string &img_path,RETRIE
     if(this->pca_dims_ > this->feature_dims_)
         return NULL;
     cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
+    /*
+    cv::Rect bounding_rect;
+    bounding_rect.x = 40; 
+    bounding_rect.y = 120; 
+    bounding_rect.width = 400;
+    bounding_rect.height = 400;
+    img = img(bounding_rect);
+    */
     cv::Mat bwImg;
     if(retriver_type !=BASE_RETRIEVER)
     {
@@ -57,25 +79,28 @@ const float* DeepFeatureExtractor::extractFeatures(const string &img_path,RETRIE
         res.convertTo(bwImg,CV_8UC1);
         img = postprocessMbs(img, bwImg);
         //temp
-        /*
         string::size_type found = img_path.find_last_of("/\\");
         string img_file_name = img_path.substr(found+1);
         string to_write_name = string("/home/zyb/VirtualDisk500/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_save/")+img_file_name;
         cv::imwrite(to_write_name.c_str(), img);
-        */
     }
 
     if(img.empty())
         return NULL;
-    const float* img_features_ptr =  this->compute(img);
+    const float* img_feature_ptr;
+    if(retriver_type == PAINTING_RETRIEVER) {
+        img_feature_ptr = this->computePainting(img);
+        return img_feature_ptr;
+    } 
+    img_feature_ptr =  this->compute(img);
     if(this->pca_dims_ < this->feature_dims_) {
         //dont need to copy img_feature to pca_feature
-        cv::Mat img_feature(1, this->feature_dims_, CV_32FC1, const_cast<float*>(img_features_ptr));
+        cv::Mat img_feature(1, this->feature_dims_, CV_32FC1, const_cast<float*>(img_feature_ptr));
         this->pca_feature = this->projectPCA(img_feature);
         return (float*)this->pca_feature.data;
     }
     else
-        return img_features_ptr;
+        return img_feature_ptr;
 
     //query feature normlized is conducted in the following matching process
     //memcpy(feature, (float*)pca_feature.data, sizeof(float)*this->pca_dims_); 
@@ -86,7 +111,7 @@ int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature
         return 1;
     cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
     cv::Mat bwImg;
-    if(retriver_type !=0)
+    if(retriver_type !=BASE_RETRIEVER)
     {
         cv::Mat res = computeMBS(img);
         res.convertTo(bwImg,CV_8UC1);
@@ -94,7 +119,11 @@ int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature
     }
     if(img.empty())
         return 1;
-    const float* img_feature_ptr = this->compute(img);
+    const float* img_feature_ptr;
+    if(retriver_type == PAINTING_RETRIEVER)
+        img_feature_ptr = this->computePainting(img);
+    else
+        img_feature_ptr = this->compute(img);
     if(this->pca_dims_ < this->feature_dims_) {
         //dont need to copy img_feature to pca_feature
         cv::Mat img_feature(1, this->feature_dims_, CV_32FC1, const_cast<float*>(img_feature_ptr));
@@ -106,7 +135,7 @@ int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature
     return 0;
 }
 
-int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* features) {
+int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* features, RETRIEVER_TYPE retriver_type) {
     std::vector<cv::Mat> vec_imgs_features;
     vec_imgs_features.reserve(imgs.size());
     for(vector<string>::const_iterator citer = imgs.begin(); citer!=imgs.end(); citer++) {
@@ -120,7 +149,11 @@ int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* f
            continue; 
          }
             //return 1;
-        const float* d_features_ptr =  this->compute(img);
+        const float* d_features_ptr;
+        if(retriver_type == PAINTING_RETRIEVER)
+            d_features_ptr = this->computePainting(img);
+        else
+            d_features_ptr =  this->compute(img);
         cv::Mat d_features(1, this->feature_dims_, CV_32FC1, const_cast<float*>(d_features_ptr));
         vec_imgs_features.push_back(d_features.clone());
     } 
@@ -136,7 +169,6 @@ int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* f
         this->compressPCA(stack_features, train_pca_features, this->pca_dims_);
    else 
        train_pca_features = stack_features;
-   std::cout <<"train pca features rows:"<<train_pca_features.rows<<std::endl;
    for(int i=0; i <train_pca_features.rows ; i++) {
         //L2 normalize
         cv::normalize(train_pca_features.row(i), train_pca_features.row(i), 1, 0, cv::NORM_L2, -1); 
@@ -213,7 +245,7 @@ else
     this->net_->CopyTrainedLayersFrom(trained_file);
 
     CHECK_EQ(this->net_->num_inputs(), 1) << "Network should have exactly one input.";
-    CHECK_EQ(this->net_->num_outputs(), 1) << "Network should have exactly one output.";
+    //CHECK_EQ(this->net_->num_outputs(), 1) << "Network should have exactly one output.";
 
     Blob<float>* input_layer = this->net_->input_blobs()[0];
     num_channels_ = input_layer->channels();
@@ -225,16 +257,73 @@ else
         << " in the network " << model_file;
     blob_name_ = blob_name;
 
-    this->feature_dims_ = net_->blob_by_name(blob_name_)->count();
+    //this->feature_dims_ = net_->blob_by_name(blob_name_)->count();
+
+    this->feature_dims_ = pca_dims;
     this->pca_dims_ = pca_dims;
 
     input_layer->Reshape(1, num_channels_,
                          input_geometry_.height, input_geometry_.width);
     /* Forward dimension change to all layers. */
     net_->Reshape();
+    //std::cout <<"Feature dims:"<<this->feature_dims_ <<std::endl;
 
     /* Load the binaryproto mean file. */
     SetMean(mean_file);
+}
+
+//Specific for Monet Painting Retriever
+const float* DeepFeatureExtractor::computePainting(const cv::Mat& img) {
+    std::vector<cv::Mat> input_channels;
+    WrapInputLayer(input_channels);
+
+    Preprocess(img, input_channels);
+
+    net_->ForwardPrefilled();
+
+    //shape (1,512, 1, 1)
+    const boost::shared_ptr<Blob<float>> output_blob_1 = net_->blob_by_name("res3a_end");
+    const boost::shared_ptr<Blob<float>> output_blob_2 = net_->blob_by_name("res4c_end");
+    const boost::shared_ptr<Blob<float>> output_blob_3 = net_->blob_by_name("res5c_end");
+
+    auto shape_1 = output_blob_1->shape();
+    auto shape_2 = output_blob_2->shape();
+    auto shape_3 = output_blob_3->shape();
+
+
+    float* feature_1 = output_blob_1->mutable_cpu_data();
+    float* feature_2 = output_blob_2->mutable_cpu_data();
+    float* feature_3 = output_blob_3->mutable_cpu_data();
+
+    cv::Mat featureMat_1 = cv::Mat(shape_1[1], shape_1[2]*shape_1[3], CV_32FC1, feature_1).clone();
+    cv::Mat featureMat_2 = cv::Mat(shape_1[1], shape_2[1]/shape_1[1], CV_32FC1, feature_2).clone();
+    cv::Mat featureMat_3 = cv::Mat(shape_1[1], shape_3[1]/shape_1[1], CV_32FC1, feature_3).clone();
+    /*
+    for(int i =0; i <10; i ++)
+        std::cout << featureMat_1.at<float>(i,0) <<std::endl;
+    for(int i =0; i <5; i ++){
+        std::cout << featureMat_2.at<float>(i,0) <<std::endl;
+        std::cout << featureMat_2.at<float>(i,1) <<std::endl;
+    }
+    */
+
+    //sum pooling
+    cv::Mat featureMat_2_reduced;
+    cv::Mat featureMat_3_reduced;
+
+    //reduced to single column
+    cv::reduce(featureMat_2, featureMat_2_reduced, 1, CV_REDUCE_SUM);
+    cv::reduce(featureMat_3, featureMat_3_reduced, 1, CV_REDUCE_SUM);
+
+    cv::Mat merge_feature;
+    merge_feature.create(3, featureMat_1.rows*featureMat_1.cols, CV_32FC1);
+    featureMat_1.reshape(1,1).copyTo(merge_feature.row(0));
+    featureMat_2_reduced.reshape(1,1).copyTo(merge_feature.row(1));
+    featureMat_3_reduced.reshape(1,1).copyTo(merge_feature.row(2));
+
+    //std::cout <<merge_feature <<std::endl;
+    return (float*)merge_feature.data;
+    
 }
 
 //cv::Mat DeepFeatureExtractor::compute(const cv::Mat& img) {

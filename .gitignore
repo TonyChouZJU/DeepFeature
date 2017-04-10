@@ -6,5 +6,6 @@ CMakeCache.txt
 *swp
 *.jpg
 *.bmp
+tmp/
 tmp/online_test_3
 tmp/online_test_2

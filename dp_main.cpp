@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
     for(int i=0;i< 100; i++){
         start = std::chrono::system_clock::now();
         const float* query_ptr = df_extractor.extractFeatures(vec_imgs[0]);
+        std::cout <<query_ptr[0] <<std::endl;
         std::pair<int, float> query_result = wildcard_test(query_ptr, dataset_ptr, n_samples, m_features); 
         std::cout<<std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count()<<"\n";
     }

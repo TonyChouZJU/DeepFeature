@@ -16,14 +16,9 @@
 bool LoadDLRetrieverModel(const string &model_path, float * model_data,int DLRetrieverTrainFeatureCount, int DLRetrieverImageFeatureSize){
     std::ifstream fin(model_path, std::ios::in);
     for (size_t i = 0;i < DLRetrieverImageFeatureSize * DLRetrieverTrainFeatureCount;i++) {
-        if (!(fin >> model_data[i])) {
-            if (i != DLRetrieverImageFeatureSize * DLRetrieverTrainFeatureCount - 1) {
-                std::cout<<"LoadDLRetrieverModel1 "<<model_path<<" failed: data format error" <<std::endl;
-            return false;
-            }
-        }
+        fin >> model_data[i];
     }
-
+    fin.close();
     return true;
 }
 
@@ -52,7 +47,9 @@ int main(int argc, char** argv) {
     string model_file   = argv[1];
     string trained_file = argv[2];
     string mean_file    = argv[3];
-    int m_features = 2048;
+    //int m_features = 2048;
+    int m_features = 1536;
+    //int m_features = 1024;
     DeepFeatureExtractor df_extractor(model_file, trained_file, mean_file, m_features, true, 0);
 
     std::ifstream train_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/train_file_list.txt", ios::in);
@@ -77,11 +74,12 @@ int main(int argc, char** argv) {
 
     typedef std::chrono::time_point<std::chrono::system_clock> TimePoint;
     TimePoint start = std::chrono::system_clock::now();
-    string loadingModelFile("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/train_features_file.txt");
-    if(!LoadDLRetrieverModel(loadingModelFile, dataset_ptr, n_samples, m_features)) {
+    string loadingModelFile("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/train_features_file_all_1562.txt");
+    //if(!LoadDLRetrieverModel(loadingModelFile, dataset_ptr, n_samples, m_features)) {
+    if(true) {
         std::cout <<"Start Training......."<<std::endl;
         //--------------------Train --------------------
-        df_extractor.pictures2Features(train_file_vec, dataset_ptr);
+        df_extractor.pictures2Features(train_file_vec, dataset_ptr, PAINTING_RETRIEVER);
         std::cout<<"Training time:" << std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count()<<"\n";
         if(SaveDLRetrieverModel(dataset_ptr,loadingModelFile, n_samples, m_features)) 
             std::cout <<"Model has saved!"<<std::endl;
@@ -90,6 +88,7 @@ int main(int argc, char** argv) {
 
     }
 
+    std::cout <<"Train size:"<<n_samples <<std::endl;
     std::ifstream test_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/test_file_list.txt", ios::in);
     string s_test;
     string query_image_path;
@@ -115,7 +114,8 @@ int main(int argc, char** argv) {
                 map_count[test_label] += 1.0;
             start = std::chrono::system_clock::now();
             try {
-                const float* query_ptr = df_extractor.extractFeatures(query_image_path, IM_RETRIEVER);
+                //const float* query_ptr = df_extractor.extractFeatures(query_image_path, IM_RETRIEVER);
+                const float* query_ptr = df_extractor.extractFeatures(query_image_path, PAINTING_RETRIEVER);
                 std::pair<int, float> query_result = wildcard_test(query_ptr, dataset_ptr, n_samples, m_features); 
                 string query_label = train_label_vec[query_result.first];
                 all_time += std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count();

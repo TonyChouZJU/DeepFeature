@@ -1,1 +1,4 @@
-./TEST_WORKER /home/zyb/py-faster-rcnn/pretrained_models/ResNet-50-deploy.prototxt /home/zyb/py-faster-rcnn/pretrained_models/ResNet-50-model.caffemodel /home/zyb/caffe-master/data/ilsvrc12/imagenet_mean.binaryproto 
+./TEST_WORKER ./ResNet_pooling.prototxt /home/zyb/py-faster-rcnn/pretrained_models/ResNet-50-model.caffemodel /home/zyb/caffe-master/data/ilsvrc12/imagenet_mean.binaryproto
+#./TEST_WORKER /home/zyb/py-faster-rcnn/pretrained_models/ResNet-50-deploy.prototxt /home/zyb/py-faster-rcnn/pretrained_models/ResNet-50-model.caffemodel /home/zyb/caffe-master/data/ilsvrc12/imagenet_mean.binaryproto
+#./TEST_WORKER /home/zyb/py-faster-rcnn/pretrained_models/googlenet_deploy.prototxt /home/zyb/py-faster-rcnn/pretrained_models/bvlc_googlenet.caffemodel /home/zyb/caffe-master/data/ilsvrc12/imagenet_mean.binaryproto
+#./TEST_WORKER /home/zyb/py-faster-rcnn/pretrained_models/ResNet-50-deploy.prototxt /home/zyb/py-faster-rcnn/pretrained_models/ResNet-50-model.caffemodel /home/zyb/caffe-master/data/ilsvrc12/imagenet_mean.binaryproto 
