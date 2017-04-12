@@ -666,8 +666,8 @@ layer {
 
 layer {
 	bottom: "res3a"
-	top: "res3a_end"
-	name: "res3a_end"
+	top: "res3a_end_max"
+	name: "res3a_end_max"
 	type: "Pooling"
 	pooling_param {
 		kernel_size: 6
@@ -677,7 +677,7 @@ layer {
 }
 
 layer{
-	bottom:"res3a_end"
+	bottom:"res3a_end_max"
     	top: "res3a_end"
     	name: "res3a_end"
     	type:"Pooling"
@@ -1571,8 +1571,8 @@ layer {
 
 layer {
 	bottom: "res4c"
-	top: "res4c_end"
-	name: "res4c_end"
+	top: "res4c_end_max"
+	name: "res4c_end_max"
 	type: "Pooling"
 	pooling_param {
 		kernel_size: 3
@@ -1582,7 +1582,7 @@ layer {
 }
 
 layer{
-	bottom:"res4c_end"
+	bottom:"res4c_end_max"
     	top: "res4c_end"
     	name: "res4c_end"
     	type:"Pooling"
@@ -2478,8 +2478,8 @@ layer {
 
 layer{
 	bottom:"res5c"
-    	top: "res5c_end"
-    	name: "res5c_end"
+    	top: "res5c_end_max"
+    	name: "res5c_end_max"
     	type:"Pooling"
     	pooling_param{
     		kernel_size:3
@@ -2489,7 +2489,7 @@ layer{
 }
 
 layer{
-	bottom:"res5c_end"
+	bottom:"res5c_end_max"
     	top: "res5c_end"
     	name: "res5c_end"
     	type:"Pooling"

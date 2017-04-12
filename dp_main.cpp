@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     string mean_file    = argv[3];
     int n_samples = 100;
     int m_features = 2048;
-    DeepFeatureExtractor df_extractor(model_file, trained_file, mean_file, m_features, false);
+    DeepFeatureExtractor df_extractor(model_file, trained_file, mean_file, false);
 
     //动态开辟空间
     float* dataset_ptr =  new float[n_samples*m_features];  

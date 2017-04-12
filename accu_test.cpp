@@ -14,11 +14,17 @@
 
 
 bool LoadDLRetrieverModel(const string &model_path, float * model_data,int DLRetrieverTrainFeatureCount, int DLRetrieverImageFeatureSize){
+    std::cout <<"Loading ......"<<std::endl;
     std::ifstream fin(model_path, std::ios::in);
+    if(!fin) {
+        std::cout << "cannot open this file:"<< model_path<<std::endl;
+        return false;
+    }
     for (size_t i = 0;i < DLRetrieverImageFeatureSize * DLRetrieverTrainFeatureCount;i++) {
         fin >> model_data[i];
     }
     fin.close();
+    std::cout <<"End Loading!"<<std::endl;
     return true;
 }
 
@@ -50,9 +56,11 @@ int main(int argc, char** argv) {
     //int m_features = 2048;
     int m_features = 1536;
     //int m_features = 1024;
-    DeepFeatureExtractor df_extractor(model_file, trained_file, mean_file, m_features, true, 0);
+    DeepFeatureExtractor df_extractor(model_file, trained_file, mean_file, false, 0);
 
-    std::ifstream train_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/train_file_list.txt", ios::in);
+    //std::ifstream train_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/train_file_list.txt", ios::in);
+    std::ifstream train_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/monet_train_test/train_file_list_single.txt", ios::in);
+    //std::ifstream train_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/monet_train_test/train_file_list_small.txt", ios::in);
     string s;
     vector<string> train_file_vec;
     vector<string> train_label_vec;
@@ -74,9 +82,10 @@ int main(int argc, char** argv) {
 
     typedef std::chrono::time_point<std::chrono::system_clock> TimePoint;
     TimePoint start = std::chrono::system_clock::now();
-    string loadingModelFile("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/train_features_file_all_1562.txt");
-    //if(!LoadDLRetrieverModel(loadingModelFile, dataset_ptr, n_samples, m_features)) {
-    if(true) {
+    string loadingModelFile("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/monet_train_test/train_features_file_single_1562.txt");
+    //string loadingModelFile("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/monet_train_test/train_features_file_all_1562_small_3.txt");
+    if(!LoadDLRetrieverModel(loadingModelFile, dataset_ptr, n_samples, m_features)) {
+//    if(true) {
         std::cout <<"Start Training......."<<std::endl;
         //--------------------Train --------------------
         df_extractor.pictures2Features(train_file_vec, dataset_ptr, PAINTING_RETRIEVER);
@@ -89,7 +98,7 @@ int main(int argc, char** argv) {
     }
 
     std::cout <<"Train size:"<<n_samples <<std::endl;
-    std::ifstream test_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/online_test_3/test_file_list.txt", ios::in);
+    std::ifstream test_file("/mnt/exhdd/tomorning_dataset/wonderland/cv/Deep_retriver_worker/tmp/monet_train_test/test_file_list_single.txt", ios::in);
     string s_test;
     string query_image_path;
     string test_label;
@@ -107,7 +116,7 @@ int main(int argc, char** argv) {
             test_label = s_test.substr(position+1);
             if(map_count.find(test_label) == map_count.end())
             {
-                map_count[test_label] = 0.0;
+                map_count[test_label] = 1.0;
                 map_correct[test_label] = 0.0;
             }
             else
@@ -120,7 +129,8 @@ int main(int argc, char** argv) {
                 string query_label = train_label_vec[query_result.first];
                 all_time += std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now() - start).count();
 
-                if(query_result.second >= 0.6 && test_label==query_label)
+                std::cout <<"score :" << query_result.second <<std::endl;
+                if(query_result.second >= 0.935 && test_label==query_label)
                 {
                     correct+=1.0;
                     map_correct[test_label] += 1.0;
@@ -140,9 +150,9 @@ int main(int argc, char** argv) {
 
     std::map<string, float>::iterator m_it_correct = map_correct.begin();
     std::map<string, float>::iterator m_it_count = map_count.begin();
-    for( ;m_it_correct != map_correct.end(); m_it_correct ++, m_it_count++)
+    for( ;m_it_count != map_count.end(); m_it_correct ++, m_it_count++)
     {
-        std::cout <<"Label:"<<m_it_correct->first << ";" << m_it_correct->second / m_it_count->second<< std::endl;
+        std::cout <<"Label: "<<m_it_correct->first << "; " <<"correct :"<< m_it_correct->second << " " << m_it_correct->second / m_it_count->second<< std::endl;
     }
 
     std:: cout <<"All accuracy:"<<correct/total <<std::endl;

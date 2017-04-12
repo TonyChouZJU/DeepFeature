@@ -60,7 +60,20 @@ static void formatFeaturesForPCA(const vector<cv::Mat> &data, cv::Mat& dst) {
         data[i].copyTo(dst.row(i));
 }
 
+void DeepFeatureExtractor::SetFeatureDims(RETRIEVER_TYPE retriver_type) {
+    if(retriver_type== PAINTING_RETRIEVER){
+        this->feature_dims_ = 1536;
+        this->pca_dims_ = 1536;
+    }
+    else {
+        this->feature_dims_ = 2048;
+        this->pca_dims_ = 2048;
+    }
+}
+
 const float* DeepFeatureExtractor::extractFeatures(const string &img_path,RETRIEVER_TYPE retriver_type) {
+    SetFeatureDims(retriver_type);
+
     if(this->pca_dims_ > this->feature_dims_)
         return NULL;
     cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
@@ -107,6 +120,9 @@ const float* DeepFeatureExtractor::extractFeatures(const string &img_path,RETRIE
 }
 
 int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature, RETRIEVER_TYPE retriver_type) {
+    
+    SetFeatureDims(retriver_type);
+
     if(this->pca_dims_ > this->feature_dims_)
         return 1;
     cv::Mat img = cv::imread(img_path, CV_LOAD_IMAGE_COLOR);
@@ -136,6 +152,9 @@ int DeepFeatureExtractor::extractFeatures(const string &img_path, float* feature
 }
 
 int DeepFeatureExtractor::pictures2Features(const vector<string> &imgs, float* features, RETRIEVER_TYPE retriver_type) {
+
+    SetFeatureDims(retriver_type);
+
     std::vector<cv::Mat> vec_imgs_features;
     vec_imgs_features.reserve(imgs.size());
     for(vector<string>::const_iterator citer = imgs.begin(); citer!=imgs.end(); citer++) {
@@ -228,10 +247,10 @@ void DeepFeatureExtractor::compressPCA(cv::InputArray _pcaset, cv::OutputArray _
 DeepFeatureExtractor::DeepFeatureExtractor(const string& model_file,
                        const string& trained_file,
                        const string& mean_file,
-                       int pca_dims,
                        bool gpu_mode,
                        int gpu_id,
                        const string blob_name){
+                       //int pca_dims,
 if (gpu_mode)
 {
     Caffe::set_mode(Caffe::GPU);
@@ -259,8 +278,9 @@ else
 
     //this->feature_dims_ = net_->blob_by_name(blob_name_)->count();
 
-    this->feature_dims_ = pca_dims;
-    this->pca_dims_ = pca_dims;
+    //initilize in the train or test function
+    //this->feature_dims_ = pca_dims;
+    //this->pca_dims_ = pca_dims;
 
     input_layer->Reshape(1, num_channels_,
                          input_geometry_.height, input_geometry_.width);
@@ -299,11 +319,20 @@ const float* DeepFeatureExtractor::computePainting(const cv::Mat& img) {
     cv::Mat featureMat_2 = cv::Mat(shape_1[1], shape_2[1]/shape_1[1], CV_32FC1, feature_2).clone();
     cv::Mat featureMat_3 = cv::Mat(shape_1[1], shape_3[1]/shape_1[1], CV_32FC1, feature_3).clone();
     /*
-    for(int i =0; i <10; i ++)
+    std::cout << "feature 512:"<<std::endl;
+    for(int i =0; i <20; i ++)
         std::cout << featureMat_1.at<float>(i,0) <<std::endl;
-    for(int i =0; i <5; i ++){
+    std::cout << "feature 1024:"<<std::endl;
+    for(int i =0; i <10; i ++){
         std::cout << featureMat_2.at<float>(i,0) <<std::endl;
         std::cout << featureMat_2.at<float>(i,1) <<std::endl;
+    }
+    std::cout << "feature 2048:"<<std::endl;
+    for(int i =0; i <5; i ++){
+        std::cout << featureMat_3.at<float>(i,0) <<std::endl;
+        std::cout << featureMat_3.at<float>(i,1) <<std::endl;
+        std::cout << featureMat_3.at<float>(i,2) <<std::endl;
+        std::cout << featureMat_3.at<float>(i,3) <<std::endl;
     }
     */
 
@@ -311,9 +340,23 @@ const float* DeepFeatureExtractor::computePainting(const cv::Mat& img) {
     cv::Mat featureMat_2_reduced;
     cv::Mat featureMat_3_reduced;
 
-    //reduced to single column
-    cv::reduce(featureMat_2, featureMat_2_reduced, 1, CV_REDUCE_SUM);
-    cv::reduce(featureMat_3, featureMat_3_reduced, 1, CV_REDUCE_SUM);
+    //reduced to single column using avg
+    cv::reduce(featureMat_2, featureMat_2_reduced, 1, CV_REDUCE_AVG);
+    cv::reduce(featureMat_3, featureMat_3_reduced, 1, CV_REDUCE_AVG);
+
+    /*
+    std::cout << "reduced feature 1024:"<<std::endl;
+    for(int i =0; i <10; i ++){
+        std::cout << featureMat_2_reduced.at<float>(i,0) <<" ";
+    }
+    std::cout <<std::endl;
+
+    std::cout << "reduced feature 2048:"<<std::endl;
+    for(int i =0; i <10; i ++){
+        std::cout << featureMat_3_reduced.at<float>(i,0) <<" ";
+    }
+    std::cout <<std::endl;
+    */
 
     cv::Mat merge_feature;
     merge_feature.create(3, featureMat_1.rows*featureMat_1.cols, CV_32FC1);
@@ -321,7 +364,7 @@ const float* DeepFeatureExtractor::computePainting(const cv::Mat& img) {
     featureMat_2_reduced.reshape(1,1).copyTo(merge_feature.row(1));
     featureMat_3_reduced.reshape(1,1).copyTo(merge_feature.row(2));
 
-    //std::cout <<merge_feature <<std::endl;
+    std::cout <<merge_feature <<std::endl;
     return (float*)merge_feature.data;
     
 }

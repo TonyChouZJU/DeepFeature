@@ -29,10 +29,10 @@ public:
     DeepFeatureExtractor(const string& model_file,
                const string& trained_file,
                const string& mean_file,
-               int pca_dims,
                bool gpu_mode=true,
                int gpu_id=0,
                const string blob_name="pool5");
+               //int pca_dims,
 
 
     void compressPCA(cv::InputArray _pcaset, cv::OutputArray _compressed, int maxComponents);
@@ -51,6 +51,8 @@ private:
     DeepFeatureExtractor(const DeepFeatureExtractor&) = delete;
 
     DeepFeatureExtractor& operator=(const DeepFeatureExtractor&) = delete;
+
+    void SetFeatureDims(RETRIEVER_TYPE retriver_type);
 
     void SetMean(const string& mean_file);
 
